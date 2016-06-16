@@ -1,0 +1,49 @@
+// https://github.com/adambom/Sass-Math/blob/master/math.scss
+
+@function pow($x, $n) {
+  $ret: 1;
+
+  @if $n >= 0 {
+    @if $n > 0 {
+      @for $i from 1 through $n {
+        $ret: $ret * $x;
+      }
+    } @else {
+      @return 1;
+    }
+  } @else {
+    @for $i from $n to 0 {
+      $ret: $ret / $x;
+    }
+  }
+
+  @return $ret;
+}
+
+@function factorial($x) {
+  $ret: 1;
+
+  @if $x > 0 {
+    @while $x > 0 {
+      $ret: $ret * $x;
+
+      $x: $x - 1;
+    }
+  }
+
+  @return $ret;
+}
+
+@function exp($x) {
+  $ret: 0;
+
+  @for $n from 0 to 25 {
+    $ret: $ret + power($x, $n) / factorial($n);
+  }
+
+  @return $ret;
+}
+
+@function sqrt($x) {
+  @return exp(0.5 * ln($x));
+}

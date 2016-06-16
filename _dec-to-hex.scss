@@ -1,0 +1,22 @@
+@function dec-to-hex($d) {
+    $hexVals: "A" "B" "C" "D" "E" "F";
+    $base: 16;
+    $quotient: $d;
+    $result: "";
+    @if $d == 0 {
+        $result: "00";
+    }
+    @while $quotient != 0 {
+        $mod: $quotient % $base;
+        $quotient: floor($quotient / $base);
+        @if $mod > 9 {
+            $mod: nth($hexVals, $mod - 9);
+        }
+        @if $d < $base {
+            $result: "0" + $mod;
+        } @else {
+            $result: $mod + $result;
+        }
+    }
+    @return $result;
+}

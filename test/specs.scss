@@ -1,0 +1,78 @@
+@import "../node_modules/bootcamp/src/bootcamp";
+@import "../husl";
+
+@include describe("HUSL consistency") {
+  $samples: "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f";
+
+  @include @include it("should convert between HUSL and hex") {
+    @each $r in $samples {
+      @each $g in $samples {
+        @each $b in $samples {
+          $hex: "#" + $r + $r + $g + $g + $b + $b;
+          @include should(expect(husl-to-hex(husl-from-hex($hex))), to(be($hex)));
+        }
+      }
+    }
+  }
+
+  @include @include it("should convert between HUSLp and hex") {
+    @each $r in $samples {
+      @each $g in $samples {
+        @each $b in $samples {
+          $hex: "#" + $r + $r + $g + $g + $b + $b;
+          @include should(expect(huslp-to-hex(huslp-from-hex($hex))), to(be($hex)));
+        }
+      }
+    }
+  }
+}
+
+$rgb-range-tolerance = 0.00000000001
+$snapshot-tolerance = 0.00000000001
+
+@include describe("Fits within RGB ranges") ->
+@include it("should fit") ->
+@for $H in (n for n in [0..360] by 5) {
+  @for $S in (n for n in [0..100] by 5) {
+    @for $L in (n for n in [0..100] by 5) {
+      $RGB: husl-to-RGB($H, $S, $L);
+      @each $channel in $RGB {
+        // assert -rgb-range-tolerance <= channel <= 1 + rgb-range-tolerance, "HUSL: #{[H, S, L]} -> #{RGB}"
+      }
+
+      $RGB: huslp-to-RGB($H, $S, $L);
+      @each $channel in $RGB {
+        // assert -rgb-range-tolerance <= channel <= 1 + rgb-range-tolerance, "HUSLp: #{[H, S, L]} -> #{RGB}"
+      }
+    }
+  }
+}
+}
+}
+
+@include describe("HUSL snapshot") {
+  @include it("should match the stable snapshot") {
+    $timeout: 10000;
+
+    $current: snapshot.snapshot()
+    $stable: @import "./snapshot-rev4.json";
+
+    @for $hex, $stable-samples in $stable {
+      $current-samples: map-get($current, $hex);
+      @for $tag, $stable-tuple in $stable-samples {
+        $current-tuple: map-get($current-samples, $tag);
+        @for $i from 1 through 3 {
+          $diff: abs(nth($current-tuple, $i) - nth($stable-tuple, $i));
+          @include should(expect($diff), to(be-less-than($snapshot-tolerance)));
+          @else {
+            /*
+            The snapshots for #{hex} don"t match at #{tag}
+            Stable:  #{stableTuple}
+            Current: #{currentTuple}
+            */
+          }
+        }
+      }
+    }
+  }
+}

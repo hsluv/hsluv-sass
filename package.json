@@ -1,0 +1,14 @@
+{
+  "name": "husl-sass",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node-sass test/specs.scss"
+  },
+  "author": "",
+  "license": "ISC"
+}
