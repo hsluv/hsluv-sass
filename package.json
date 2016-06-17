@@ -10,5 +10,8 @@
     "test": "node-sass test/specs.scss"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mathsass": "^0.9.5"
+  }
 }

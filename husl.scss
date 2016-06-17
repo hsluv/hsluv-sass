@@ -1,31 +1,31 @@
 @import "functions";
 
-@function husl-from-rgb($r, $g, $b) {
-  @return conv-rgb-husl(($r $g $b));
+@function husl-from-rgb($rgb) {
+  @return conv-rgb-husl($rgb);
 }
 
 @function husl-from-hex($hex) {
   @return conv-rgb-husl(conv-hex-rgb($hex));
 }
 
-@function husl-to-rgb($h, $s, $l) {
-  @return conv-husl-rgb(($h $s $l));
+@function husl-to-rgb($hsl) {
+  @return conv-husl-rgb($hsl);
 }
 
-@function husl-to-hex($h, $s, $l) {
-  @return conv-rgb-hex(conv-husl-rgb(($h $s $l)));
+@function husl-to-hex($hsl) {
+  @return conv-rgb-hex(conv-husl-rgb($hsl));
 }
 
-@function huslp-to-rgb($h, $s, $l) {
-  @return conv-xyz-rgb(conv-luv-xyz(conv-lch-luv(conv-huslp-lch(($h $s $l)))));
+@function huslp-to-rgb($hsl) {
+  @return conv-xyz-rgb(conv-luv-xyz(conv-lch-luv(conv-huslp-lch($hsl))));
 }
 
-@function huslp-to-hex($h, $s, $l) {
-  @return conv-rgb-hex(conv-xyz-rgb(conv-luv-xyz(conv-lch-luv(conv-huslp-lch(($h $s $l))))));
+@function huslp-to-hex($hsl) {
+  @return conv-rgb-hex(conv-xyz-rgb(conv-luv-xyz(conv-lch-luv(conv-huslp-lch($hsl)))));
 }
 
-@function huslp-from-rgb($r, $g, $b) {
-  @return conv-lch-huslp(conv-luv-lch(conv-xyz-luv(conv-rgb-xyz(($r $g $b)))));
+@function huslp-from-rgb($rgb) {
+  @return conv-lch-huslp(conv-luv-lch(conv-xyz-luv(conv-rgb-xyz($rgb))));
 }
 
 @function huslp-from-hex($hex) {

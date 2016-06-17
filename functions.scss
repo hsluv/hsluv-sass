@@ -237,9 +237,9 @@ $epsilon: 0.0088564516790356308;
   }
   $var-u: $u / (13 * $l) + $ref-u;
   $var-v: $v / (13 * $l) + $ref-v;
-  $y: l-to-y(l);
+  $y: l-to-y($l);
   $x: 0 - (9 * $y * $var-u) / (($var-u - 4) * $var-v - $var-u * $var-v);
-  $z: (9 * $y - (15 * $var-v * $y) - ($var-v * x)) / (3 * $var-v);
+  $z: (9 * $y - (15 * $var-v * $y) - ($var-v * $x)) / (3 * $var-v);
   @return ($x, $y, $z);
 }
 
@@ -250,10 +250,9 @@ $epsilon: 0.0088564516790356308;
   $u: nth($tuple, 2);
   $v: nth($tuple, 3);
   $c: sqrt(pow($u, 2) + pow($v, 2));
+  $h: 0;
   // greys: disambiguate hue
-  @if $c < 0.00000001 {
-    $h: 0;
-  } @else {
+  @if $c >= 0.00000001 {
     $h-rad: atan2($v, $u);
     $h: $h-rad * 360 / 2 / pi();
     @if $h < 0 {
@@ -281,10 +280,9 @@ $epsilon: 0.0088564516790356308;
   $h: nth($tuple, 1);
   $s: nth($tuple, 2);
   $l: nth($tuple, 3);
+  $c: 0;
   // white and black: disambiguate chroma
-  @if $l > 99.9999999 or $l < 0.00000001 {
-    $c: 0;
-  } @else {
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
     $max: max-chroma-for-l-h($l, $h);
     $c: $max / 100 * $s;
   }
@@ -297,10 +295,9 @@ $epsilon: 0.0088564516790356308;
   $l: nth($tuple, 1);
   $c: nth($tuple, 2);
   $h: nth($tuple, 3);
+  $s: 0;
   // white and black: disambiguate saturation
-  @if $l > 99.9999999 or $l < 0.00000001 {
-    $s: 0;
-  } @else {
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
     $max: max-chroma-for-l-h($l, $h);
     $s: $c / $max * 100;
   }
@@ -315,10 +312,9 @@ $epsilon: 0.0088564516790356308;
   $h: nth($tuple, 1);
   $s: nth($tuple, 2);
   $l: nth($tuple, 3);
+  $c: 0;
   // white and black: disambiguate chroma
-  @if $l > 99.9999999 or $l < 0.00000001 {
-    $c: 0;
-  } @else {
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
     $max: max-safe-chroma-for-l($l);
     $c: $max / 100 * $s;
   }
@@ -331,10 +327,9 @@ $epsilon: 0.0088564516790356308;
   $l: nth($tuple, 1);
   $c: nth($tuple, 2);
   $h: nth($tuple, 3);
+  $s: 0;
   // White and black: disambiguate saturation
-  @if $l > 99.9999999 or $l < 0.00000001 {
-    $s: 0;
-  } @else {
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
     $max: max-safe-chroma-for-l($l);
     $s: $c / $max * 100;
   }
