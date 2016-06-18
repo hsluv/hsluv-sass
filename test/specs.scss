@@ -1,6 +1,6 @@
 @import "../node_modules/bootcamp/src/bootcamp";
 
-$bc-settings-verbose: true;
+$bc-settings-verbose: false;
 
 @include runner-start;
 
@@ -9,8 +9,9 @@ $bc-settings-verbose: true;
 @import "utils/dec-to-hex";
 
 @import "functions";
+@import "conversions";
 
-// @import "husl";
+@import "husl";
 
 //
 // $rgb-range-tolerance: 0.00000000001;
