@@ -2,6 +2,10 @@
 set -e
 set -x
 
+. $HOME/.nvm/nvm.sh
+nvm install "$TRAVIS_NODE_VERSION"
+nvm use "$TRAVIS_NODE_VERSION"
+
 npm install
 
 if [ -n "${NODE_SASS_VERSION}" ]
