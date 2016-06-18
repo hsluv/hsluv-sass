@@ -2,6 +2,8 @@
 set -e
 set -x
 
+npm install
+
 if [ -n "${NODE_SASS_VERSION}" ]
 then
   npm install node-sass@"${NODE_SASS_VERSION}"
