@@ -1,0 +1,16 @@
+env:
+  - TEST_SASS_VERSION="~> 3.0"
+  - TEST_SASS_VERSION="~> 3.4"
+  - TEST_SASS_VERSION="~> 3.3"
+  - TEST_SASS_VERSION="~> 3.2"
+  - NODE_SASS_VERSION=latest
+  - NODE_SASS_VERSION="~3.7.0"
+  - NODE_SASS_VERSION="~3.6.0"
+  - NODE_SASS_VERSION="~3.5.0"
+  - NODE_SASS_VERSION="~3.4.0"
+
+before_install:
+  - travis/install.sh
+  
+script:
+  - travis/test.sh
