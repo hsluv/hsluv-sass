@@ -1,7 +1,9 @@
-@import "dec-to-hex";
-@import "math";
-@import "parse-int";
-@import "trig";
+@import "node_modules/mathsass/dist/math";
+@import "node_modules/mathsass/dist/constants";
+
+@import "utils/dec-to-hex";
+@import "utils/hex-to-dec";
+@import "utils/parse-int";
 
 // @typedef {number[2]} Line
 // @typedef {number[2]} Point
@@ -42,7 +44,7 @@ $epsilon: 0.0088564516790356308;
     $m3: nth($m_, 3);
     @for $t from 0 through 1 {
       $top1: (284517 * $m1 - 94839 * $m3) * $sub2;
-      $top2: (838422 * $m3 + 769860 * $m2 + 731718 * $m1) * L * $sub2 - 769860 * $t * $L;
+      $top2: (838422 * $m3 + 769860 * $m2 + 731718 * $m1) * $l * $sub2 - 769860 * $t * $l;
       $bottom: (632260 * $m3 - 126452 * $m2) * $sub2 + 126452 * $t;
 
       $ret: append($ret, ($top1 / $bottom, $top2 / $bottom));
@@ -88,7 +90,7 @@ $epsilon: 0.0088564516790356308;
   $m1: nth($line, 1);
   $b1: nth($line, 2);
   $len: $b1 / (sin($theta) - $m1 * cos($theta));
-  @return if(len < 0, null, $len);
+  @return if($len < 0, null, $len);
 }
 
 // For given lightness, returns the maximum chroma. Keeping the chroma value
@@ -104,10 +106,10 @@ $epsilon: 0.0088564516790356308;
     $b1: nth($point, 2);
     // x where line intersects with perpendicular running though (0, 0)
     $x: intersect-line-line(($m1, $b1), (-1 / $m1, 0));
-    $lengths: append($lengths, distance-from-pole($s, $b1 + $x * $m1));
+    $lengths: append($lengths, distance-from-pole(($x, $b1 + $x * $m1)));
   }
 
-  @return min($lengths);
+  @return min($lengths...);
 }
 
 // For a given lightness and hue, return the maximum chroma that fits in
@@ -116,7 +118,7 @@ $epsilon: 0.0088564516790356308;
 // @param {number} $h
 // @return {number}
 @function max-chroma-for-l-h($l, $h) {
-  $hrad: $h / 360 * pi() * 2;
+  $hrad: $h / 360 * $PI * 2;
   $lengths: ();
 
   @each $line in get-bounds($l) {
@@ -126,7 +128,7 @@ $epsilon: 0.0088564516790356308;
     }
   }
 
-  @return min($lengths);
+  @return min($lengths...);
 }
 
 // @param {number[]} $a
@@ -254,7 +256,7 @@ $epsilon: 0.0088564516790356308;
   // greys: disambiguate hue
   @if $c >= 0.00000001 {
     $h-rad: atan2($v, $u);
-    $h: $h-rad * 360 / 2 / pi();
+    $h: $h-rad * 360 / 2 / $PI;
     @if $h < 0 {
       $h: 360 + $h;
     }
@@ -268,7 +270,7 @@ $epsilon: 0.0088564516790356308;
   $l: nth($tuple, 1);
   $c: nth($tuple, 2);
   $h: nth($tuple, 3);
-  $h-rad: $h / 360 * 2 * pi();
+  $h-rad: $h / 360 * 2 * $PI;
   $u: cos($h-rad) * $c;
   $v: sin($h-rad) * $c;
   @return ($l, $u, $v);
@@ -342,9 +344,9 @@ $epsilon: 0.0088564516790356308;
   $hex: "#";
   @each $ch in $tuple {
     // Round to 6 decimal places
-    $ch: round($ch * 1e6) / 1e6;
+    $ch: round($ch * 1000000) / 1000000;
     @if $ch < 0 or $ch > 1 {
-      @error "Illegal rgb value: #{$ch}";
+      @error "Illegal rgb value: #{$ch} from #{$tuple}";
     }
     $ch: dec-to-hex(round($ch * 255));
     @if length($ch) == 1 {
@@ -362,9 +364,9 @@ $epsilon: 0.0088564516790356308;
     $hex: str-slice($hex, 2, 8);
   }
   // TODO
-  $r: 1; // parse-int(str-slice($hex, 1, 3), 16) / 255;
-  $g: 1; // parse-int(str-slice($hex, 3, 5), 16) / 255;
-  $b: 1; // parse-int(str-slice($hex, 5, 7), 16) / 255;
+  $r: hex-to-dec(str-slice($hex, 1, 3)) / 255;
+  $g: hex-to-dec(str-slice($hex, 3, 5)) / 255;
+  $b: hex-to-dec(str-slice($hex, 5, 7)) / 255;
   @return ($r, $g, $b);
 }
 

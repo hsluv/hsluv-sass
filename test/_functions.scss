@@ -1,0 +1,76 @@
+// ?? @import "../node_modules/bootcamp/src/bootcamp";
+@import "../src/functions";
+
+//
+// Most of these tests are created by running the source js on the input, and
+// copying the output
+//
+
+@include describe("intersect-line-line") {
+  @include it("should work") {
+    @include should(expect(intersect-line-line((1.23, 3.45), (6.23, 3.11))), to(be(0.06800000000000006)));
+  }
+}
+
+@include describe("distance-from-pole") {
+  @include it("should work") {
+    @include should(expect(distance-from-pole((4.32, 5.23))), to(be(6.783457820315537)));
+  }
+}
+
+@include describe("length-of-ray-until-intersect") {
+  @include it("should work") {
+    @include should(expect(length-of-ray-until-intersect(0.234, (2.43, 73.45))), to(be(null)));
+    @include should(expect(length-of-ray-until-intersect(1.234, (2.43, 73.45))), to(be-close-to(521.7064074364049, 8)));
+  }
+}
+
+@include describe("dot-product") {
+  @include it("should work") {
+    @include should(expect(dot-product((2), (4))), to(be(8)));
+    @include should(expect(dot-product((1, 3), (4, 5))), to(be(19)));
+    @include should(expect(dot-product((5.23, 23.2, 1.2), (4.43, 5.42, 0.1))), to(be(149.0329)));
+  }
+}
+
+@include describe("from-linear") {
+  @include it("should work") {
+    @include should(expect(from-linear(0.0001)), to(be(0.001292)));
+    @include should(expect(from-linear(0.123)), to(be(0.3856017888563188)));
+    @include should(expect(from-linear(12.3)), to(be(2.9467850436056042)));
+  }
+}
+
+@include describe("to-linear") {
+  @include it("should work") {
+    @include should(expect(to-linear(0.001)), to(be-close-to(0.00007739938080495357, 4)));
+    @include should(expect(to-linear(0.123)), to(be-close-to(0.013970183234932964, 4)));
+    @include should(expect(to-linear(12.3)), to(be-close-to(366.95828400407856, 4)));
+  }
+}
+
+// more complex functions
+
+@include describe("get-bounds") {
+  @include it("should work") {
+    @include should(expect(get-bounds(10)), to(be(((-8.021739130434783, -63.70563018240983), (0.08726129137380577, -60.85087924830718), (1.3259649910233395, -36.49555417768104), (-0.025383977890972166, -61.34844034877459), (-0.12162162162162163, 11.091899201577185), (-0.007079328850638234, -56.69217925433503)))));
+    @include should(expect(get-bounds(2)), to(be(((-8.021739130434781, -12.741126036481964), (0.017009692466172538, -12.17512222547033), (1.3259649910233395, -7.299110835536207), (-0.004915695567145192, -12.194400945198103), (-0.12162162162162163, 2.2183798403154364), (-0.001460308357579932, -12.00348299936154)))));
+    @include should(expect(get-bounds(99)), to(be(((-8.021739130434781, -630.6857388058572), (108.51818322356918, -224.5129548058308), (1.3259649910233395, -361.30598635904227), (3.446083696490305, 24.709464627864566), (-0.12162162162162161, 109.80980209561412), (-0.10246288422125004, -2.434396476781836)))));
+  }
+}
+
+@include describe("max-safe-chroma-for-l") {
+  @include it("should work") {
+    @include should(expect(max-safe-chroma-for-l(12)), to(be(9.456750248530316)));
+    @include should(expect(max-safe-chroma-for-l(1)), to(be(0.7880625207108596)));
+    @include should(expect(max-safe-chroma-for-l(63.2)), to(be(49.805551308926326)));
+  }
+}
+
+@include describe("max-chroma-for-l-h") {
+  @include it("should work") {
+    @include should(expect(max-chroma-for-l-h(12.4, 23.1)), to(be(27.278373488717314)));
+    @include should(expect(max-chroma-for-l-h(0.4, 253)), to(be(0.77180722498895)));
+    @include should(expect(max-chroma-for-l-h(4.4, 88.2)), to(be(4.864253310023044)));
+  }
+}

@@ -1,5 +1,5 @@
 @function dec-to-hex($d) {
-    $hexVals: "A" "B" "C" "D" "E" "F";
+    $hexVals: "a" "b" "c" "d" "e" "f";
     $base: 16;
     $quotient: $d;
     $result: "";

@@ -1,0 +1,23 @@
+@import "../../node_modules/bootcamp/src/bootcamp";
+@import "../../src/utils/dec-to-hex";
+
+@include describe("dec to hex") {
+  @include it("should convert decimal numbers to hex strings") {
+    @include should(expect(dec-to-hex(16)), to(be("10")));
+    @include should(expect(dec-to-hex(255)), to(be("ff")));
+    @include should(expect(dec-to-hex(291)), to(be("123")));
+    @include should(expect(dec-to-hex(2989)), to(be("bad")));
+    @include should(expect(dec-to-hex(8000000000000000)), to(be("1c6bf526340000")));
+  }
+
+  @include it("should prefix single digit hex values with 0") {
+    @include should(expect(dec-to-hex(0)), to(be("00")));
+    @include should(expect(dec-to-hex(3)), to(be("03")));
+    @include should(expect(dec-to-hex(12)), to(be("0c")));
+  }
+
+  @include it("should handle weird numbers") {
+    @include should(expect(dec-to-hex(2989)), to(be("bad")));
+    @include should(expect(dec-to-hex(16)), to(be("10")));
+  }
+}
