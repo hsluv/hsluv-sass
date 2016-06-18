@@ -13,5 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "mathsass": "^0.9.5"
+  },
+  "devDependencies": {
+    "bootcamp": "github:apexskier/bootcamp"
   }
 }
