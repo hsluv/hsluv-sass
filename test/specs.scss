@@ -10,32 +10,6 @@
 @import "conversions";
 
 @import "husl";
-
-//
-//
-// @include describe("HUSL snapshot") {
-//   @include it("should match the stable snapshot") {
-//     $timeout: 10000;
-//
-//     $current: (); // snapshot.snapshot();
-//     $stable: (); // @import "./snapshot-rev4.json";
-//
-//     @each $hex, $stable-samples in $stable {
-//       $current-samples: map-get($current, $hex);
-//       @each $tag, $stable-tuple in $stable-samples {
-//         $current-tuple: map-get($current-samples, $tag);
-//         @for $i from 1 through 3 {
-//           $diff: abs(nth($current-tuple, $i) - nth($stable-tuple, $i));
-//           @include should(expect($diff), to(be-less-than($snapshot-tolerance)));
-//           // /*
-//           // The snapshots for #{hex} don't match at #{tag}
-//           // Stable:  #{stableTuple}
-//           // Current: #{currentTuple}
-//           // */
-//         }
-//       }
-//     }
-//   }
-// }
+@import "husl-sample";
 
 @include runner-end;

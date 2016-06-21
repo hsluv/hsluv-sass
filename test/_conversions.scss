@@ -7,6 +7,10 @@
     @include should(expect(conv-hex-rgb("#000000")), to(be((0, 0, 0))));
     @include should(expect(conv-hex-rgb("#ff00cc")), to(be((1, 0, 204 / 255))));
   }
+
+  @include it("should handle unquoted strings") {
+    @include should(expect(conv-hex-rgb(#ff00cc)), to(be((1, 0, 204 / 255))));
+  }
 }
 
 @include describe("rgb-hex-conv") {

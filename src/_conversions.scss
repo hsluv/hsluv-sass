@@ -155,6 +155,7 @@
 // @param {Tuple} $tuple
 // @return {Tuple}
 @function conv-hex-rgb($hex) {
+  $hex: inspect($hex);
   @if str-slice($hex, 1, 1) == "#" {
     $hex: str-slice($hex, 2, 8);
   }
