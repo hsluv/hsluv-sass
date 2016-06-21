@@ -155,11 +155,14 @@
 // @param {Tuple} $tuple
 // @return {Tuple}
 @function conv-hex-rgb($hex) {
-  $hex: inspect($hex);
+  @if type-of($hex) == string {
+    $hex: unquote($hex);
+  } @else {
+    $hex: inspect($hex);
+  }
   @if str-slice($hex, 1, 1) == "#" {
     $hex: str-slice($hex, 2, 8);
   }
-  // TODO
   $r: hex-to-dec(str-slice($hex, 1, 2)) / 255;
   $g: hex-to-dec(str-slice($hex, 3, 4)) / 255;
   $b: hex-to-dec(str-slice($hex, 5, 6)) / 255;

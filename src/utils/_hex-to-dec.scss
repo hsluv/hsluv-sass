@@ -17,7 +17,7 @@
     $current-char: str-slice($hex, -$i, -$i);
     $current-digit: index($numbers, $current-char);
     @if not $current-digit {
-      @warn "Unknown character `#{$current-char}`.";
+      @warn "Unknown character `#{$current-char}` in `#{$hex}`.";
       @return false;
     }
     $current-digit: $current-digit - 1;

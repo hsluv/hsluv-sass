@@ -35,16 +35,16 @@
       $rgb: husl-to-rgb(($h, $s, $l));
 
       @each $channel in $rgb {
-        @include should(expect($channel), to(be-greater-than(-$rgb-range-tolerance)))
-        @include should(expect($channel), to(be-less-than(1 + $rgb-range-tolerance)))
+        @include should(expect($channel), to(be-greater-than(-$rgb-range-tolerance)));
+        @include should(expect($channel), to(be-less-than(1 + $rgb-range-tolerance)));
         $hsl: ($h, $s, $l);
         // husl: #{$hsl} -> #{$rgb}
       }
 
       $rgb: huslp-to-rgb(($h, $s, $l));
       @each $channel in $rgb {
-        @include should(expect($channel), to(be-greater-than(-$rgb-range-tolerance)))
-        @include should(expect($channel), to(be-less-than(1 + $rgb-range-tolerance)))
+        @include should(expect($channel), to(be-greater-than(-$rgb-range-tolerance)));
+        @include should(expect($channel), to(be-less-than(1 + $rgb-range-tolerance)));
         $hsl: ($h, $s, $l);
         // huslp: #{$hsl} -> #{$rgb}
       }

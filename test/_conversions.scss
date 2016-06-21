@@ -3,7 +3,7 @@
 // Add more here as problem conversion values are discovered
 
 @include describe("conv-hex-rgb") {
-  @include it("should convert hex color values to rgb values between 0 and 1") {
+  @include it("should convert hex color values to rgb values between zero and one") {
     @include should(expect(conv-hex-rgb("#000000")), to(be((0, 0, 0))));
     @include should(expect(conv-hex-rgb("#ff00cc")), to(be((1, 0, 204 / 255))));
   }
