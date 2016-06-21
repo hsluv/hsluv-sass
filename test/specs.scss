@@ -12,40 +12,6 @@
 @import "husl";
 
 //
-// $rgb-range-tolerance: 0.00000000001;
-// $snapshot-tolerance: 0.00000000001;
-//
-// @include describe("Fits within RGB ranges") {
-//   @include it("should fit") {
-//     $h: 0;
-//     @while $h <= 360 {
-//       $s: 0;
-//       @while $s <= 100 {
-//         $l: 0;
-//         @while $l <= 100 {
-//
-//           $rgb: husl-to-rgb($h, $s, $l);
-//           @each $channel in $rgb {
-//             // assert -rgb-range-tolerance <= channel <= 1 + rgb-range-tolerance,
-//             @include should(expect($channel), to(be-greater-than(-$rgb-range-tolerance)))
-//             @include should(expect($channel), to(be-less-than(1 + $rgb-range-tolerance)))
-//             $hsl: ($h, $s, $l);
-//             /* husl: #{$hsl} -> #{$rgb} */
-//           }
-//
-//           $rgb: huslp-to-rgb($h, $s, $l);
-//           @each $channel in $rgb {
-//             // assert -rgb-range-tolerance <= channel <= 1 + rgb-range-tolerance, "huslp: #{[h, s, l]} -> #{rgb}"
-//           }
-//
-//           $l: $l + 5;
-//         }
-//         $s: $s + 5;
-//       }
-//       $h: $h + 5;
-//     }
-//   }
-// }
 //
 // @include describe("HUSL snapshot") {
 //   @include it("should match the stable snapshot") {

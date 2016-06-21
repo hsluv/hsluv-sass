@@ -1,31 +1,57 @@
 @import "../src/husl";
 
+$hex-digits: "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f";
+$num-hex-digits: length($hex-digits);
+@function rand-hex-digit() {
+  @return nth($hex-digits, random($num-hex-digits));
+}
+@function rand-hex-color() {
+  @return "##{rand-hex-digit()}#{rand-hex-digit()}#{rand-hex-digit()}#{rand-hex-digit()}#{rand-hex-digit()}#{rand-hex-digit()}";
+}
+
 @include describe("HUSL consistency") {
-  $samples: "0" "1" "2" "3" "4" "5" "6" "7" "8" "9" "a" "b" "c" "d" "e" "f";
-  $sample-percent: .01;
+  $samples: 50;
 
   @include it("should convert between HUSL and hex") {
-    @each $r in $samples {
-      @each $g in $samples {
-        @each $b in $samples {
-          $hex: "#" + $r + $r + $g + $g + $b + $b;
-          @if random() < $sample-percent {
-            @include should(expect(husl-to-hex(husl-from-hex($hex))), to(be($hex)));
-          }
-        }
-      }
+    @for $_ from 0 through $samples {
+      $hex: rand-hex-color();
+      @include should(expect(husl-to-hex(husl-from-hex($hex))), to(be($hex)));
     }
   }
 
   @include it("should convert between HUSLp and hex") {
-    @each $r in $samples {
-      @each $g in $samples {
-        @each $b in $samples {
-          $hex: "#" + $r + $r + $g + $g + $b + $b;
-          @if random() < $sample-percent {
-            @include should(expect(huslp-to-hex(huslp-from-hex($hex))), to(be($hex)));
-          }
-        }
+    @for $_ from 0 through $samples {
+      $hex: rand-hex-color();
+      @include should(expect(huslp-to-hex(huslp-from-hex($hex))), to(be($hex)));
+    }
+  }
+}
+
+@include describe("Fits within RGB ranges") {
+  $rgb-range-tolerance: 0.00000000001;
+  $snapshot-tolerance: 0.00000000001;
+  $samples: 50;
+
+  @include it("should fit") {
+    @for $_ from 0 through $samples {
+      $h: random(361) - 1;
+      $s: random(101) - 1;
+      $l: random(101) - 1;
+      $rgb: husl-to-rgb(($h, $s, $l));
+
+      @each $channel in $rgb {
+        @include should(expect($channel), to(be-greater-than(-$rgb-range-tolerance)))
+        @include should(expect($channel), to(be-less-than(1 + $rgb-range-tolerance)))
+        $hsl: ($h, $s, $l);
+        // husl: #{$hsl} -> #{$rgb}
+      }
+
+      $rgb: huslp-to-rgb(($h, $s, $l));
+      @each $channel in $rgb {
+        @include should(expect($channel), to(be-greater-than(-$rgb-range-tolerance)))
+        @include should(expect($channel), to(be-less-than(1 + $rgb-range-tolerance)))
+        $hsl: ($h, $s, $l);
+        // huslp: #{$hsl} -> #{$rgb}
       }
     }
   }
