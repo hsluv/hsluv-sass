@@ -1,7 +1,5 @@
 @import "../node_modules/bootcamp/src/bootcamp";
 
-$bc-settings-verbose: false;
-
 @include runner-start;
 
 @import "utils/parse-int";
