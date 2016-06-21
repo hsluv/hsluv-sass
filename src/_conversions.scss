@@ -138,8 +138,6 @@
 @function conv-rgb-hex($tuple) {
   $hex: "#";
   @each $ch in $tuple {
-    // Round to 6 decimal places
-    $ch: round($ch * 1000000) / 1000000;
     @if $ch < 0 or $ch > 1 {
       @error "Illegal rgb value: #{$ch} from #{$tuple}";
     }
