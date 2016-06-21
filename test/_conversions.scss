@@ -13,9 +13,10 @@
   }
 }
 
-@include describe("rgb-hex-conv") {
+@include describe("conv-rgb-hex") {
   @include it("should convert rgb color values to hex strings") {
     @include should(expect(conv-rgb-hex((0, 0, 0))), to(be("#000000")));
     @include should(expect(conv-rgb-hex((1, 0, 204 / 255))), to(be("#ff00cc")));
+    @include should(expect(conv-rgb-hex((0.79216, 1, 0.2902))), to(be("#caff4a")));
   }
 }

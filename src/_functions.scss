@@ -1,6 +1,7 @@
 @import "../node_modules/mathsass/dist/math";
 @import "../node_modules/mathsass/dist/constants";
 
+@import "constants";
 @import "utils/dec-to-hex";
 @import "utils/hex-to-dec";
 @import "utils/parse-int";
@@ -9,24 +10,6 @@
 // @typedef {number[2]} Point
 // @typedef {number[][2]} Lightness
 // @typedef {number[3]} Tuple
-
-$m: (
-  r: (  3.2409699419045214,   -1.5373831775700935, -0.49861076029300328  ),
-  g: ( -0.96924363628087983,   1.8759675015077207,  0.041555057407175613 ),
-  b: (  0.055630079696993609, -0.20397695888897657, 1.0569715142428786   )
-);
-$m-inv: (
-  x: ( 0.41239079926595948,  0.35758433938387796, 0.18048078840183429  ),
-  y: ( 0.21263900587151036,  0.71516867876775593, 0.072192315360733715 ),
-  z: ( 0.019330818715591851, 0.11919477979462599, 0.95053215224966058  )
-);
-
-$ref-u: 0.19783000664283681;
-$ref-v: 0.468319994938791;
-
-// CIE LUV constants
-$kappa: 903.2962962962963;
-$epsilon: 0.0088564516790356308;
 
 // For a given lightness, return a list of 6 lines in slope-intercept
 // form that represent the bounds in CIELUV, stepping over which will
@@ -158,30 +141,6 @@ $epsilon: 0.0088564516790356308;
   } @else {
     @return $c / 12.92;
   }
-}
-
-//// Color format conversions
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-xyz-rgb($tuple) {
-  $r: from-linear(dot-product(map-get($m, r), $tuple));
-  $g: from-linear(dot-product(map-get($m, g), $tuple));
-  $b: from-linear(dot-product(map-get($m, b), $tuple));
-  @return ($r, $g, $b);
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-rgb-xyz($tuple) {
-  $r: nth($tuple, 1);
-  $g: nth($tuple, 2);
-  $b: nth($tuple, 3);
-  $rgbl: (to-linear($r), to-linear($g), to-linear($b));
-  $x: dot-product(map-get($m_inv, x), $rgbl);
-  $y: dot-product(map-get($m_inv, y), $rgbl);
-  $z: dot-product(map-get($m_inv, z), $rgbl);
-  @return ($x, $y, $z);
 }
 
 // http://en.wikipedia.org/wiki/CIELUV

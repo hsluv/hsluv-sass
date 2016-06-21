@@ -1,7 +1,30 @@
 @import "../node_modules/mathsass/dist/constants";
 @import "../node_modules/mathsass/dist/math";
 
+@import "constants";
 @import "functions";
+
+// @param {Tuple} $tuple
+// @return {Tuple}
+@function conv-xyz-rgb($tuple) {
+  $r: from-linear(dot-product(map-get($m, r), $tuple));
+  $g: from-linear(dot-product(map-get($m, g), $tuple));
+  $b: from-linear(dot-product(map-get($m, b), $tuple));
+  @return ($r, $g, $b);
+}
+
+// @param {Tuple} $tuple
+// @return {Tuple}
+@function conv-rgb-xyz($tuple) {
+  $r: nth($tuple, 1);
+  $g: nth($tuple, 2);
+  $b: nth($tuple, 3);
+  $rgbl: (to-linear($r), to-linear($g), to-linear($b));
+  $x: dot-product(map-get($m_inv, x), $rgbl);
+  $y: dot-product(map-get($m_inv, y), $rgbl);
+  $z: dot-product(map-get($m_inv, z), $rgbl);
+  @return ($x, $y, $z);
+}
 
 // @param {Tuple} $tuple
 // @return {Tuple}
@@ -138,8 +161,15 @@
 @function conv-rgb-hex($tuple) {
   $hex: "#";
   @each $ch in $tuple {
+    // Round to 6 decimal places
+    $ch: round($ch * 1000000) / 1000000;
     @if $ch < 0 or $ch > 1 {
-      @error "Illegal rgb value: #{$ch} from #{$tuple}";
+      @warn "Illegal rgb value: #{$ch} from #{$tuple}";
+      @if $ch < 0 {
+        $ch: 0;
+      } @else if $ch > 1 {
+        $ch: 1;
+      }
     }
     $ch: dec-to-hex(round($ch * 255));
     @if str-length($ch) == 1 {
