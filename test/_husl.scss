@@ -10,7 +10,7 @@ $num-hex-digits: length($hex-digits);
 }
 
 @include describe("HUSL consistency") {
-  $samples: 50;
+  $samples: 20;
 
   @include it("should convert between HUSL and hex") {
     @for $_ from 0 through $samples {
@@ -30,7 +30,7 @@ $num-hex-digits: length($hex-digits);
 @include describe("Fits within RGB ranges") {
   $rgb-range-tolerance: 0.00000000001;
   $snapshot-tolerance: 0.00000000001;
-  $samples: 50;
+  $samples: 20;
 
   @include it("should fit") {
     @for $_ from 0 through $samples {
