@@ -1,0 +1,38 @@
+@import "../conversions";
+
+$color-types: hex rgb xyz luv lch husl hulsp hsl;
+$supported-color-types: hex;
+
+@function rgb-color($rgb) {
+  @return rgb(nth($rgb, 1) * 255, nth($rgb, 2) * 255, nth($rgb, 3) * 255);
+}
+
+@function convert-to-color($value, $type: null) {
+  $type: type-of($value);
+  @if $type == string {
+    // assuming hex
+    @if str-slice($value, 1, 1) == "#" {
+      @if str-length($value) == 4 {
+        $value: str-insert($value, str-slice($value, 4, 4), 4);
+        $value: str-insert($value, str-slice($value, 3, 3), 3);
+        $value: str-insert($value, str-slice($value, 2, 2), 2);
+        $rgb: conv-hex-rgb($value);
+        @return rgb-color($rgb);
+      } @else if str-length($value) == 7 {
+        $rgb: conv-hex-rgb($value);
+        @return rgb-color($rgb);
+      } @else {
+        @warn "Can't convert string `#{$value}` to sass color";
+      }
+    } @else {
+      @warn "Can't convert string `#{$value}` to sass color";
+    }
+  } @else if $type == color {
+    @return $value;
+  } @else if $type == list {
+
+  } @else if $type == map {
+
+  }
+  @return null;
+}

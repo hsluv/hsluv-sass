@@ -1,0 +1,14 @@
+@import "../../src/utils/colors";
+
+@include describe("convert-to-color") {
+  @include it("can parse hex strings") {
+    @include should(expect(convert-to-color("#abc")), to(be(#abc)));
+    @include should(expect(convert-to-color("#aabbcc")), to(be(#abc)));
+  }
+
+  @include it("can parse sass color values") {
+    @include should(expect(convert-to-color(#abc)), to(be(#abc)));
+    @include should(expect(convert-to-color(#aabbcc)), to(be(#abc)));
+    @include should(expect(convert-to-color(rgb(20, 40, 60))), to(be(#14283c)));
+  }
+}
