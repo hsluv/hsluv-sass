@@ -1,5 +1,7 @@
 @import "../node_modules/bootcamp/src/bootcamp";
 
+$bc-setting-return-code: true;
+
 @include runner-start;
 
 @import "utils/parse-int";
