@@ -5,18 +5,18 @@
 @include describe("conv-hex-rgb") {
   @include it("should convert hex color values to rgb values between zero and one") {
     @include should(expect(conv-hex-rgb("#000000")), to(be((0, 0, 0))));
-    @include should(expect(conv-hex-rgb("#ff00cc")), to(be((1, 0, 204 / 255))));
+    @include should(expect(conv-hex-rgb("#ff00cc")), to(be((255, 0, 204))));
   }
 
   @include it("should handle unquoted strings") {
-    @include should(expect(conv-hex-rgb(#ff00cc)), to(be((1, 0, 204 / 255))));
+    @include should(expect(conv-hex-rgb(#ff00cc)), to(be((255, 0, 204))));
   }
 }
 
 @include describe("conv-rgb-hex") {
   @include it("should convert rgb color values to hex strings") {
     @include should(expect(conv-rgb-hex((0, 0, 0))), to(be("#000000")));
-    @include should(expect(conv-rgb-hex((1, 0, 204 / 255))), to(be("#ff00cc")));
-    @include should(expect(conv-rgb-hex((0.79216, 1, 0.2902))), to(be("#caff4a")));
+    @include should(expect(conv-rgb-hex((255, 0, 204))), to(be("#ff00cc")));
+    @include should(expect(conv-rgb-hex((202, 255, 74))), to(be("#caff4a")));
   }
 }

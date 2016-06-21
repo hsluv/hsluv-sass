@@ -7,18 +7,18 @@
 // @param {Tuple} $tuple
 // @return {Tuple}
 @function conv-xyz-rgb($tuple) {
-  $r: from-linear(dot-product(map-get($m, r), $tuple));
-  $g: from-linear(dot-product(map-get($m, g), $tuple));
-  $b: from-linear(dot-product(map-get($m, b), $tuple));
+  $r: from-linear(dot-product(map-get($m, r), $tuple)) * 255;
+  $g: from-linear(dot-product(map-get($m, g), $tuple)) * 255;
+  $b: from-linear(dot-product(map-get($m, b), $tuple)) * 255;
   @return ($r, $g, $b);
 }
 
 // @param {Tuple} $tuple
 // @return {Tuple}
 @function conv-rgb-xyz($tuple) {
-  $r: nth($tuple, 1);
-  $g: nth($tuple, 2);
-  $b: nth($tuple, 3);
+  $r: nth($tuple, 1) / 255;
+  $g: nth($tuple, 2) / 255;
+  $b: nth($tuple, 3) / 255;
   $rgbl: (to-linear($r), to-linear($g), to-linear($b));
   $x: dot-product(map-get($m_inv, x), $rgbl);
   $y: dot-product(map-get($m_inv, y), $rgbl);
@@ -124,8 +124,6 @@
   @return ($h, $s, $l);
 }
 
-//// PASTEL HUSL
-
 // @param {Tuple} $tuple
 // @return {Tuple}
 @function conv-huslp-lch($tuple) {
@@ -163,7 +161,7 @@
   @each $ch in $tuple {
     // Round to 6 decimal places
     $ch: round($ch * 1000000) / 1000000;
-    @if $ch < 0 or $ch > 1 {
+    @if $ch < 0 or $ch > 255 {
       @warn "Illegal rgb value: #{$ch} from #{$tuple}";
       @if $ch < 0 {
         $ch: 0;
@@ -171,7 +169,7 @@
         $ch: 1;
       }
     }
-    $ch: dec-to-hex(round($ch * 255));
+    $ch: dec-to-hex(round($ch));
     @if str-length($ch) == 1 {
       $ch: "0" + inspect($ch);
     }
@@ -191,9 +189,9 @@
   @if str-slice($hex, 1, 1) == "#" {
     $hex: str-slice($hex, 2, 8);
   }
-  $r: hex-to-dec(str-slice($hex, 1, 2)) / 255;
-  $g: hex-to-dec(str-slice($hex, 3, 4)) / 255;
-  $b: hex-to-dec(str-slice($hex, 5, 6)) / 255;
+  $r: hex-to-dec(str-slice($hex, 1, 2));
+  $g: hex-to-dec(str-slice($hex, 3, 4));
+  $b: hex-to-dec(str-slice($hex, 5, 6));
   @return ($r, $g, $b);
 }
 
@@ -214,16 +212,19 @@
 @function conv-husl-rgb($tuple) {
   @return conv-lch-rgb(conv-husl-lch($tuple));
 }
+
 // @param {Tuple} $tuple
 // @return {Tuple}
 @function conv-rgb-husl($tuple) {
   @return conv-lch-husl(conv-rgb-lch($tuple));
 }
+
 // @param {Tuple} $tuple
 // @return {Tuple}
 @function conv-huslp-rgb($tuple) {
   @return conv-lch-rgb(conv-huslp-lch($tuple));
 }
+
 // @param {Tuple} $tuple
 // @return {Tuple}
 @function conv-rgb-huslp($tuple) {

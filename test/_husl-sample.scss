@@ -12,12 +12,22 @@
       @each $tag, $stable-tuple in $stable-samples {
         $current-tuple: map-get($current-samples, $tag);
         @for $i from 1 through 3 {
-          @include should(expect(nth($current-tuple, $i)), to(be-close-to(nth($stable-tuple, $i), $snapshot-tolerance))) {
+          @if $tag != rgb {
+            @include should(expect(nth($current-tuple, $i)), to(be-close-to(nth($stable-tuple, $i), $snapshot-tolerance))) {
 /*
 The snapshots for #{hex} don't match at #{tag}
 Stable:  #{$stable-tuple}
 Current: #{$current-tuple}
 */
+            }
+          } @else {
+            @include should(expect(nth($current-tuple, $i)), to(be-close-to(nth($stable-tuple, $i) * 255, $snapshot-tolerance))) {
+/*
+The snapshots for #{hex} don't match at #{tag}
+Stable:  #{$stable-tuple}
+Current: #{$current-tuple}
+*/
+            }
           }
         }
       }

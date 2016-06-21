@@ -3,6 +3,13 @@ HUSL Sass [![Build Status](https://travis-ci.org/apexskier/husl-sass.png?branch=
 
 Pure Sass [HUSL](http://www.husl-colors.org) implementation.
 
+This package attempts to match the canonical implementation as closely as possible,
+but not break sass best practices and common patterns. Important deviations
+include
+
+- RGB color components range from 0 to 255, not 0 to 1
+- Testing precision is lowered significantly
+
 ## Usage
 
 ```

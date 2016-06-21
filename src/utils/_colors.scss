@@ -4,7 +4,7 @@ $color-types: hex rgb xyz luv lch husl hulsp hsl;
 $supported-color-types: hex;
 
 @function rgb-color($rgb) {
-  @return rgb(nth($rgb, 1) * 255, nth($rgb, 2) * 255, nth($rgb, 3) * 255);
+  @return rgb(nth($rgb, 1), nth($rgb, 2), nth($rgb, 3));
 }
 
 @function convert-to-color($value, $type: null) {
