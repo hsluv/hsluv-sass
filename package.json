@@ -1,20 +1,36 @@
 {
   "name": "husl-sass",
   "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "description": "HUSL Sass [![Build Status](https://travis-ci.org/apexskier/husl-sass.png?branch=master)](https://travis-ci.org/apexskier/husl-sass) [![Dependency Status](https://david-dm.org/apexskier/husl-sass.png)](https://david-dm.org/apexskier/husl-sass) [![devDependency Status](https://david-dm.org/apexskier/husl-sass/dev-status.png)](https://david-dm.org/apexskier/husl-sass#info=devDependencies) ========",
+  "main": "src/_husl.scss",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "node-sass test/specs.scss"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Cameron Little <cameron@camlittle.com>",
+  "license": "MIT",
   "dependencies": {
     "mathsass": "^0.9.5"
   },
   "devDependencies": {
     "bootcamp": "github:apexskier/bootcamp"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apexskier/husl-sass.git"
+  },
+  "keywords": [
+    "color",
+    "sass",
+    "husl"
+  ],
+  "bugs": {
+    "url": "https://github.com/apexskier/husl-sass/issues"
+  },
+  "files": [
+    "src"
+  ],
+  "homepage": "https://github.com/apexskier/husl-sass#readme"
 }

@@ -1,5 +1,5 @@
-HUSL Sass [![Build Status](https://travis-ci.org/apexskier/husl-sass.png?branch=master)](https://travis-ci.org/apexskier/husl-sass) [![Dependency Status](https://david-dm.org/apexskier/husl-sass.png)](https://david-dm.org/apexskier/husl-sass) [![devDependency Status](https://david-dm.org/apexskier/husl-sass/dev-status.png)](https://david-dm.org/apexskier/husl-sass#info=devDependencies)
-========
+# HUSL Sass
+[![Build Status](https://travis-ci.org/apexskier/husl-sass.svg?branch=master)](https://travis-ci.org/apexskier/husl-sass) [![Dependency Status](https://david-dm.org/apexskier/husl-sass.svg)](https://david-dm.org/apexskier/husl-sass) [![devDependency Status](https://david-dm.org/apexskier/husl-sass/dev-status.svg)](https://david-dm.org/apexskier/husl-sass#info=devDependencies) [![Package Version](https://img.shields.io/npm/v/husl-sass.svg)](https://www.npmjs.com/package/husl-sass)
 
 Pure Sass [HUSL](http://www.husl-colors.org) implementation.
 
@@ -20,7 +20,7 @@ This depends on [mathsass](https://github.com/terkel/mathsass), and requires
 an npm setup that allows multilevel sass imports. [Eyeglass](https://github.com/sass-eyeglass/eyeglass) may be a method for this.
 
 ```
-npm install apexskier/husl-sass
+npm install husl-sass
 ```
 
 ### Example
