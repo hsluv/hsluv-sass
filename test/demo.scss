@@ -1,0 +1,45 @@
+@import "../src/husl";
+
+/* http://codepen.io/apexskier/pen/LZbybw */
+
+.container {
+  display: flex;
+}
+
+[class^="rand-husl-"],
+[class*=" rand-husl-"],
+[class^="rand-huslp-"],
+[class*=" rand-huslp-"] {
+  height: 100px;
+  width: 100px;
+  margin: 10px;
+
+  &::before {
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    padding: 4px;
+    display: block;
+    box-sizing: border-box;
+  }
+}
+
+@for $i from 1 through 10 {
+  $r: random(360);
+
+  .rand-husl-#{$i} {
+    background-color: husl($r, 50%, 50%);
+
+    &::before {
+      content: "husl(#{$r}, 80%, 50%)";
+    }
+  }
+
+  .rand-huslp-#{$i} {
+    background-color: huslp($r, 50%, 50%);
+
+    &::before {
+      content: "husl(#{$r}, 80%, 50%)";
+    }
+  }
+}

@@ -34,6 +34,8 @@ npm install apexskier/husl-sass
 }
 ```
 
+[Compiled demo](http://codepen.io/apexskier/pen/LZbybw) generated from [`demo.scss`](https://github.com/apexskier/husl-sass/blob/master/test/demo.scss).
+
 ## Testing
 
 Tested with [apexskier's bootcamp](https://github.com/apexskier/bootcamp).
