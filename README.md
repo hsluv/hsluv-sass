@@ -29,8 +29,8 @@ npm install apexskier/husl-sass
 @import "../node_modules/husl-sass/src/husl";
 
 .example {
-  color: husl(23.2, 83.4, 43.7);
-  background-color: huslp(250.4, 100.0, 59.1);
+  color: husl(23.2, 83.4%, 43.7%);
+  background-color: huslp(250.4, 100%, 59.1%);
 }
 ```
 
