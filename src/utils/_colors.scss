@@ -1,8 +1,5 @@
 @import "../conversions";
 
-$color-types: hex rgb xyz luv lch husl hulsp hsl;
-$supported-color-types: hex;
-
 @function rgb-color($rgb) {
   @return rgb(nth($rgb, 1), nth($rgb, 2), nth($rgb, 3));
 }
@@ -30,9 +27,9 @@ $supported-color-types: hex;
   } @else if $type == color {
     @return $value;
   } @else if $type == list {
-
+    @error "unimplemented";
   } @else if $type == map {
-
+    @error "unimplemented";
   }
   @return null;
 }

@@ -160,16 +160,11 @@
   $hex: "#";
   @each $ch in $tuple {
     // Round to 6 decimal places
-    $ch: round($ch * 1000000) / 1000000;
+    $ch: round($ch);
     @if $ch < 0 or $ch > 255 {
-      @warn "Illegal rgb value: #{$ch} from #{$tuple}";
-      @if $ch < 0 {
-        $ch: 0;
-      } @else if $ch > 1 {
-        $ch: 1;
-      }
+      @error "Illegal rgb value: #{$ch} from #{$tuple}";
     }
-    $ch: dec-to-hex(round($ch));
+    $ch: dec-to-hex($ch);
     @if str-length($ch) == 1 {
       $ch: "0" + inspect($ch);
     }

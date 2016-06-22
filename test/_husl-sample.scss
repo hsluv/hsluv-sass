@@ -1,5 +1,4 @@
-@import "../src/husl";
-@import "_utils";
+@import "data/generate-snapshot";
 @import "data/snapshot";
 
 @include describe("HUSL snapshot") {

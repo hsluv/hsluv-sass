@@ -1,0 +1,17 @@
+@import "husl-conversions";
+
+@function husl($hue, $saturation, $lightness) {
+  @return rgb-color(husl-to-rgb(($hue, $saturation, $lightness)));
+}
+
+@function huslp($hue, $saturation, $lightness) {
+  @return rgb-color(huslp-to-rgb(($hue, $saturation, $lightness)));
+}
+
+@function husla($hue, $saturation, $lightness, $alpha) {
+  @return rgba(husl($hue, $saturation, $lightness), $alpha);
+}
+
+@function huslpa($hue, $saturation, $lightness, $alpha) {
+  @return rgba(huslp($hue, $saturation, $lightness), $alpha);
+}

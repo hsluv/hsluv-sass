@@ -6,27 +6,3 @@ $num-hex-digits: length($hex-digits);
 @function rand-hex-color() {
   @return "##{rand-hex-digit()}#{rand-hex-digit()}#{rand-hex-digit()}#{rand-hex-digit()}#{rand-hex-digit()}#{rand-hex-digit()}";
 }
-
-@function generate-snapshot($colors) {
-  $samples: ();
-
-  @each $hex in $colors {
-    $rgb: conv-hex-rgb($hex);
-    $xyz: conv-rgb-xyz($rgb);
-    $luv: conv-xyz-luv($xyz);
-    $lch: conv-luv-lch($luv);
-
-    $samples: map-merge($samples, (
-      $hex: (
-        rgb: $rgb,
-        xyz: $xyz,
-        luv: $luv,
-        lch: $lch,
-        husl: conv-lch-husl($lch),
-        huslp: conv-lch-huslp($lch)
-      )
-    ));
-  }
-
-  @return $samples;
-}
