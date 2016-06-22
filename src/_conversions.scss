@@ -159,12 +159,17 @@
 @function conv-rgb-hex($tuple) {
   $hex: "#";
   @each $ch in $tuple {
-    // Round to 6 decimal places
-    $ch: round($ch);
-    @if $ch < 0 or $ch > 255 {
+    // Round to 4 decimal places
+    $ch: round($ch * 10000) / 10000;
+    @if $ch < -0.0001 or $ch > 255.0001 {
       @error "Illegal rgb value: #{$ch} from #{$tuple}";
     }
-    $ch: dec-to-hex($ch);
+    @if $ch < 0 {
+      $ch: 0;
+    } @else if $ch > 255 {
+      $ch: 255;
+    }
+    $ch: dec-to-hex(round($ch));
     @if str-length($ch) == 1 {
       $ch: "0" + inspect($ch);
     }
