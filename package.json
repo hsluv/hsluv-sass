@@ -1,6 +1,6 @@
 {
   "name": "husl-sass",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "HUSL Sass [![Build Status](https://travis-ci.org/apexskier/husl-sass.png?branch=master)](https://travis-ci.org/apexskier/husl-sass) [![Dependency Status](https://david-dm.org/apexskier/husl-sass.png)](https://david-dm.org/apexskier/husl-sass) [![devDependency Status](https://david-dm.org/apexskier/husl-sass/dev-status.png)](https://david-dm.org/apexskier/husl-sass#info=devDependencies) ========",
   "main": "src/_husl.scss",
   "directories": {
