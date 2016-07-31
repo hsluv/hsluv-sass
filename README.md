@@ -1,5 +1,5 @@
 # HUSL Sass
-[![Build Status](https://travis-ci.org/apexskier/husl-sass.svg?branch=master)](https://travis-ci.org/apexskier/husl-sass) [![Dependency Status](https://david-dm.org/apexskier/husl-sass.svg)](https://david-dm.org/apexskier/husl-sass) [![devDependency Status](https://david-dm.org/apexskier/husl-sass/dev-status.svg)](https://david-dm.org/apexskier/husl-sass#info=devDependencies) [![Package Version](https://img.shields.io/npm/v/husl-sass.svg)](https://www.npmjs.com/package/husl-sass)
+[![Build Status](https://travis-ci.org/husl-colors/husl-sass.svg?branch=master)](https://travis-ci.org/husl-colors/husl-sass) [![Dependency Status](https://david-dm.org/apexskier/husl-sass.svg)](https://david-dm.org/apexskier/husl-sass) [![devDependency Status](https://david-dm.org/apexskier/husl-sass/dev-status.svg)](https://david-dm.org/apexskier/husl-sass#info=devDependencies) [![Package Version](https://img.shields.io/npm/v/husl-sass.svg)](https://www.npmjs.com/package/husl-sass)
 
 Pure Sass [HUSL](http://www.husl-colors.org) implementation.
 
