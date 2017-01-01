@@ -1,3 +1,5 @@
+node_js:
+  - "6"
 env:
   - TEST_SASS_VERSION="~> 3.0"
   - TEST_SASS_VERSION="~> 3.4"
@@ -8,9 +10,7 @@ env:
   - NODE_SASS_VERSION="3.6.x"
   - NODE_SASS_VERSION="3.5.x"
   - NODE_SASS_VERSION="3.4.x"
-
 before_install:
   - travis/install.sh
-
 script:
   - travis/test.sh

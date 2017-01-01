@@ -3,8 +3,6 @@ set -e
 
 if [ -n "${NODE_SASS_VERSION}" ]
 then
-  . $HOME/.nvm/nvm.sh
-  nvm use "$TRAVIS_NODE_VERSION"
   node-sass test/specs.scss
   exit
 fi
