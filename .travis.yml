@@ -1,6 +1,6 @@
 langauge: ruby
 rvm:
-  - "2.4"
+  - 2.4.0
 env:
   - SASS_VERSION="~> 3.1"
   - SASS_VERSION="~> 3.2"
