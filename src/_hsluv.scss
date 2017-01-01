@@ -1,0 +1,29 @@
+@import "hsluv-conversions";
+
+@function hsluv($hue, $saturation, $lightness) {
+  @if unit($saturation) == "%" {
+    $saturation: $saturation / 1%;
+  }
+  @if unit($lightness) == "%" {
+    $lightness: $lightness / 1%;
+  }
+  @return rgb-color(hsluv-to-rgb(($hue, $saturation, $lightness)));
+}
+
+@function hpluv($hue, $saturation, $lightness) {
+  @if unit($saturation) == "%" {
+    $saturation: $saturation / 1%;
+  }
+  @if unit($lightness) == "%" {
+    $lightness: $lightness / 1%;
+  }
+  @return rgb-color(hpluv-to-rgb(($hue, $saturation, $lightness)));
+}
+
+@function hsluva($hue, $saturation, $lightness, $alpha) {
+  @return rgba(hsluv($hue, $saturation, $lightness), $alpha);
+}
+
+@function hpluva($hue, $saturation, $lightness, $alpha) {
+  @return rgba(hpluv($hue, $saturation, $lightness), $alpha);
+}

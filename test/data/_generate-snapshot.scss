@@ -1,4 +1,4 @@
-@import "../husl-conversions";
+@import "../hsluv-conversions";
 
 @function generate-snapshot($colors) {
   $samples: ();
@@ -15,8 +15,8 @@
         xyz: $xyz,
         luv: $luv,
         lch: $lch,
-        husl: conv-lch-husl($lch),
-        huslp: conv-lch-huslp($lch)
+        hsluv: conv-lch-hsluv($lch),
+        hpluv: conv-lch-hpluv($lch)
       )
     ));
   }

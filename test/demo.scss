@@ -1,4 +1,4 @@
-@import "../src/husl";
+@import "../src/hsluv";
 
 /* http://codepen.io/apexskier/pen/LZbybw */
 
@@ -6,10 +6,10 @@
   display: flex;
 }
 
-[class^="rand-husl-"],
-[class*=" rand-husl-"],
-[class^="rand-huslp-"],
-[class*=" rand-huslp-"] {
+[class^="rand-hsluv-"],
+[class*=" rand-hsluv-"],
+[class^="rand-hpluv-"],
+[class*=" rand-hpluv-"] {
   height: 100px;
   width: 100px;
   margin: 10px;
@@ -27,19 +27,19 @@
 @for $i from 1 through 10 {
   $r: random(360);
 
-  .rand-husl-#{$i} {
-    background-color: husl($r, 50%, 50%);
+  .rand-hsluv-#{$i} {
+    background-color: hsluv($r, 50%, 50%);
 
     &::before {
-      content: "husl(#{$r}, 80%, 50%)";
+      content: "hsluv(#{$r}, 80%, 50%)";
     }
   }
 
-  .rand-huslp-#{$i} {
-    background-color: huslp($r, 50%, 50%);
+  .rand-hpluv-#{$i} {
+    background-color: hpluv($r, 50%, 50%);
 
     &::before {
-      content: "husl(#{$r}, 80%, 50%)";
+      content: "hsluv(#{$r}, 80%, 50%)";
     }
   }
 }

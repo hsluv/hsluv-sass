@@ -1,4 +1,4 @@
-@import "../src/husl-conversions";
+@import "../src/hsluv-conversions";
 
 // These tests aren't exhaustive, because sass can't handle that many tests.
 // Increase $samples to be more sure of the results
@@ -9,14 +9,14 @@
   @include it("should convert between HUSL and hex") {
     @for $_ from 0 through $samples {
       $hex: rand-hex-color();
-      @include should(expect(husl-to-hex(husl-from-hex($hex))), to(be($hex)));
+      @include should(expect(hsluv-to-hex(hsluv-from-hex($hex))), to(be($hex)));
     }
   }
 
   @include it("should convert between HUSLp and hex") {
     @for $_ from 0 through $samples {
       $hex: rand-hex-color();
-      @include should(expect(huslp-to-hex(huslp-from-hex($hex))), to(be($hex)));
+      @include should(expect(hpluv-to-hex(hpluv-from-hex($hex))), to(be($hex)));
     }
   }
 }
@@ -31,14 +31,14 @@
       $h: random(361) - 1;
       $s: random(101) - 1;
       $l: random(101) - 1;
-      $rgb: husl-to-rgb(($h, $s, $l));
+      $rgb: hsluv-to-rgb(($h, $s, $l));
 
       @each $channel in $rgb {
         @include should(expect($channel), to(be-greater-than(-$rgb-range-tolerance)));
         @include should(expect($channel), to(be-less-than(255 + $rgb-range-tolerance)));
       }
 
-      $rgb: huslp-to-rgb(($h, $s, $l));
+      $rgb: hpluv-to-rgb(($h, $s, $l));
       @each $channel in $rgb {
         @include should(expect($channel), to(be-greater-than(-$rgb-range-tolerance)));
         @include should(expect($channel), to(be-less-than(255 + $rgb-range-tolerance)));

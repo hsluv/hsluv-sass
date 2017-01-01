@@ -12,7 +12,7 @@ $bc-setting-return-code: true;
 @import "functions";
 @import "conversions";
 
-@import "husl";
-@import "husl-sample";
+@import "hsluv";
+@import "hsluv-sample";
 
 @include runner-end;

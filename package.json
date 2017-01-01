@@ -1,8 +1,8 @@
 {
-  "name": "husl-sass",
+  "name": "hsluv-sass",
   "version": "1.0.0",
-  "description": "HUSL Sass [![Build Status](https://travis-ci.org/apexskier/husl-sass.png?branch=master)](https://travis-ci.org/apexskier/husl-sass) [![Dependency Status](https://david-dm.org/apexskier/husl-sass.png)](https://david-dm.org/apexskier/husl-sass) [![devDependency Status](https://david-dm.org/apexskier/husl-sass/dev-status.png)](https://david-dm.org/apexskier/husl-sass#info=devDependencies) ========",
-  "main": "src/_husl.scss",
+  "description": "HSLuv Sass - Human friendly HSL",
+  "main": "src/_hsluv.scss",
   "directories": {
     "test": "test"
   },
@@ -19,18 +19,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/apexskier/husl-sass.git"
+    "url": "git+https://github.com/hsluv/hsluv-sass.git"
   },
   "keywords": [
     "color",
     "sass",
-    "husl"
+    "hsluv"
   ],
   "bugs": {
-    "url": "https://github.com/apexskier/husl-sass/issues"
+    "url": "https://github.com/hsluv/hsluv-sass/issues"
   },
   "files": [
     "src"
   ],
-  "homepage": "https://github.com/apexskier/husl-sass#readme"
+  "homepage": "https://github.com/hsluv/hsluv-sass#readme"
 }

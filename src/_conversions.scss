@@ -96,7 +96,7 @@
 
 // @param {Tuple} $tuple
 // @return {Tuple}
-@function conv-husl-lch($tuple) {
+@function conv-hsluv-lch($tuple) {
   $h: nth($tuple, 1);
   $s: nth($tuple, 2);
   $l: nth($tuple, 3);
@@ -111,7 +111,7 @@
 
 // @param {Tuple} $tuple
 // @return {Tuple}
-@function conv-lch-husl($tuple) {
+@function conv-lch-hsluv($tuple) {
   $l: nth($tuple, 1);
   $c: nth($tuple, 2);
   $h: nth($tuple, 3);
@@ -126,7 +126,7 @@
 
 // @param {Tuple} $tuple
 // @return {Tuple}
-@function conv-huslp-lch($tuple) {
+@function conv-hpluv-lch($tuple) {
   $h: nth($tuple, 1);
   $s: nth($tuple, 2);
   $l: nth($tuple, 3);
@@ -141,7 +141,7 @@
 
 // @param {Tuple} $tuple
 // @return {Tuple}
-@function conv-lch-huslp($tuple) {
+@function conv-lch-hpluv($tuple) {
   $l: nth($tuple, 1);
   $c: nth($tuple, 2);
   $h: nth($tuple, 3);
@@ -209,24 +209,24 @@
 
 // @param {Tuple} $tuple
 // @return {Tuple}
-@function conv-husl-rgb($tuple) {
-  @return conv-lch-rgb(conv-husl-lch($tuple));
+@function conv-hsluv-rgb($tuple) {
+  @return conv-lch-rgb(conv-hsluv-lch($tuple));
 }
 
 // @param {Tuple} $tuple
 // @return {Tuple}
-@function conv-rgb-husl($tuple) {
-  @return conv-lch-husl(conv-rgb-lch($tuple));
+@function conv-rgb-hsluv($tuple) {
+  @return conv-lch-hsluv(conv-rgb-lch($tuple));
 }
 
 // @param {Tuple} $tuple
 // @return {Tuple}
-@function conv-huslp-rgb($tuple) {
-  @return conv-lch-rgb(conv-huslp-lch($tuple));
+@function conv-hpluv-rgb($tuple) {
+  @return conv-lch-rgb(conv-hpluv-lch($tuple));
 }
 
 // @param {Tuple} $tuple
 // @return {Tuple}
-@function conv-rgb-huslp($tuple) {
-  @return conv-lch-huslp(conv-rgb-lch($tuple));
+@function conv-rgb-hpluv($tuple) {
+  @return conv-lch-hpluv(conv-rgb-lch($tuple));
 }

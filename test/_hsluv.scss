@@ -1,0 +1,44 @@
+@import "_utils";
+@import "../src/hsluv";
+
+@include describe("hsluv function") {
+  @include it("should act like native sass functions") {
+    @include should(expect(hsluv(0, 0, 0)), to(have-type-of(color)));
+    @include should(expect(hsluv(0, 0, 0)), to(be(#000000)));
+    @include should(expect(hsluv(212, 88, 54)), to(be(#2f8d9d)));
+    @include should(expect(hsluv(212.0012, 88, 54)), to(be(#2f8d9d)));
+    @include should(expect(hsluv(212, 88%, 54%)), to(be(#2f8d9d)));
+  }
+}
+
+@include describe("huspl function") {
+  @include it("should act like native sass functions") {
+    @include should(expect(hpluv(0, 0, 0)), to(have-type-of(color)));
+    @include should(expect(hpluv(0, 0, 0)), to(be(#000000)));
+    @include should(expect(hpluv(212, 88, 54)), to(be(#3d8c9b)));
+    @include should(expect(hpluv(212.0012, 88, 54)), to(be(#3d8c9b)));
+    @include should(expect(hpluv(212, 88%, 54%)), to(be(#3d8c9b)));
+  }
+}
+
+@include describe("hsluva function") {
+  @include it("should act like native sass functions") {
+    @include should(expect(hsluva(0, 0, 0, .5)), to(have-type-of(color)));
+    @include should(expect(hsluva(0, 0, 0, .5)), to(be(rgba(0, 0, 0, .5))));
+    @include should(expect(hsluva(212, 88, 54, .5)), to(be(rgba(#2f8d9d, .5))));
+    @include should(expect(hsluva(212, 88, 54, .5)), not-to(be(#2f8d9d)));
+    @include should(expect(hsluva(212.0012, 88, 54, .5)), to(be(rgba(#2f8d9d, .5))));
+    @include should(expect(hsluva(212.0012, 88, 54, .5)), not-to(be(#2f8d9d)));
+  }
+}
+
+@include describe("huspla function") {
+  @include it("should act like native sass functions") {
+    @include should(expect(hpluva(0, 0, 0, .5)), to(have-type-of(color)));
+    @include should(expect(hpluva(0, 0, 0, .5)), to(be(rgba(0, 0, 0, .5))));
+    @include should(expect(hpluva(212, 88, 54, .5)), to(be(rgba(#3d8c9b, .5))));
+    @include should(expect(hpluva(212, 88, 54, .5)), not-to(be(#3d8c9b)));
+    @include should(expect(hpluva(212.0012, 88, 54, .5)), to(be(rgba(#3d8c9b, .5))));
+    @include should(expect(hpluva(212.0012, 88, 54, .5)), not-to(be(#3d8c9b)));
+  }
+}

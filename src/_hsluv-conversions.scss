@@ -1,0 +1,34 @@
+@import "functions";
+@import "utils/colors";
+
+@function hsluv-from-rgb($rgb) {
+  @return conv-rgb-hsluv($rgb);
+}
+
+@function hsluv-from-hex($hex) {
+  @return conv-rgb-hsluv(conv-hex-rgb($hex));
+}
+
+@function hsluv-to-rgb($hsl) {
+  @return conv-hsluv-rgb($hsl);
+}
+
+@function hsluv-to-hex($hsl) {
+  @return conv-rgb-hex(conv-hsluv-rgb($hsl));
+}
+
+@function hpluv-to-rgb($hsl) {
+  @return conv-xyz-rgb(conv-luv-xyz(conv-lch-luv(conv-hpluv-lch($hsl))));
+}
+
+@function hpluv-to-hex($hsl) {
+  @return conv-rgb-hex(conv-xyz-rgb(conv-luv-xyz(conv-lch-luv(conv-hpluv-lch($hsl)))));
+}
+
+@function hpluv-from-rgb($rgb) {
+  @return conv-lch-hpluv(conv-luv-lch(conv-xyz-luv(conv-rgb-xyz($rgb))));
+}
+
+@function hpluv-from-hex($hex) {
+  @return conv-lch-hpluv(conv-luv-lch(conv-xyz-luv(conv-rgb-xyz(conv-hex-rgb($hex)))));
+}
