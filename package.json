@@ -15,7 +15,7 @@
     "mathsass": "^0.9.5"
   },
   "devDependencies": {
-    "bootcamp": "github:apexskier/bootcamp"
+    "bootcamp": "git://github.com/apexskier/bootcamp.git#6bbc62849abb5fe10f3259f99a6e89108c7f96c5"
   },
   "repository": {
     "type": "git",
