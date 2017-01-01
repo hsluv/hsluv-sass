@@ -1,16 +1,12 @@
-node_js:
-  - "6"
+langauge: ruby
+rvm:
+  - "2.4"
 env:
-  - TEST_SASS_VERSION="~> 3.0"
-  - TEST_SASS_VERSION="~> 3.4"
-  - TEST_SASS_VERSION="~> 3.3"
-  - TEST_SASS_VERSION="~> 3.2"
-  - NODE_SASS_VERSION=latest
-  - NODE_SASS_VERSION="3.7.x"
-  - NODE_SASS_VERSION="3.6.x"
-  - NODE_SASS_VERSION="3.5.x"
-  - NODE_SASS_VERSION="3.4.x"
-before_install:
-  - travis/install.sh
+  - SASS_VERSION="~> 3.1"
+  - SASS_VERSION="~> 3.2"
+  - SASS_VERSION="~> 3.3"
+  - SASS_VERSION="~> 3.4"
+install:
+  - gem install sass -v "${SASS_VERSION}"
 script:
-  - travis/test.sh
+  - sass test/specs.scss

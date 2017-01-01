@@ -12,7 +12,8 @@
   "author": "Cameron Little <cameron@camlittle.com>",
   "license": "MIT",
   "dependencies": {
-    "mathsass": "^0.9.5"
+    "mathsass": "^0.9.5",
+    "node-sass": "^4.1.1"
   },
   "devDependencies": {
     "bootcamp": "git://github.com/apexskier/bootcamp.git#6bbc62849abb5fe10f3259f99a6e89108c7f96c5"

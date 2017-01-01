@@ -43,8 +43,7 @@ npm install hsluv-sass
 ## Testing
 
 Tested with [apexskier's bootcamp](https://github.com/apexskier/bootcamp).
-Continuous integration tests run in the last few versions of ruby sass and
-node-sass.
+Continuous integration tests againsts Sass 3.1, 3.2, 3.3 and 3.4.
 
 You can locally test after installing npm dependencies. Just compile
 `test/specs.scss` with your favorite sass compiler. If it fails on master, add
