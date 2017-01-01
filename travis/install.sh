@@ -17,3 +17,5 @@ if [ -n "${TEST_SASS_VERSION}" ]
 then
   gem install sass -v "${TEST_SASS_VERSION}"
 fi
+
+npm ls
