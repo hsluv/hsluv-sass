@@ -18,4 +18,4 @@ then
   gem install sass -v "${TEST_SASS_VERSION}"
 fi
 
-npm ls
+npm ls || :
