@@ -7,6 +7,7 @@ env:
   - SASS_VERSION="~> 3.3"
   - SASS_VERSION="~> 3.4"
 install:
+  - npm install
   - gem install sass -v "${SASS_VERSION}"
 script:
   - sass test/specs.scss
