@@ -1,53 +1,63 @@
-@import "../node_modules/mathsass/dist/constants";
-@import "../node_modules/mathsass/dist/math";
+@use "sass:math";
 
-@import "constants";
-@import "functions";
+@use "./functions" as functions;
+@use "./constants" as constants;
 
 // @param {Tuple} $tuple
 // @return {Tuple}
-@function conv-xyz-rgb($tuple) {
-  $r: from-linear(dot-product(map-get($m, r), $tuple)) * 255;
-  $g: from-linear(dot-product(map-get($m, g), $tuple)) * 255;
-  $b: from-linear(dot-product(map-get($m, b), $tuple)) * 255;
+@function hsluv-rgb($tuple) {
+  @return lch-rgb(hsluv-lch($tuple));
+}
+
+// @param {Tuple} $tuple
+// @return {Tuple}
+@function lch-rgb($tuple) {
+  @return xyz-rgb(luv-xyz(lch-luv($tuple)));
+}
+
+// @param {Tuple} $tuple
+// @return {Tuple}
+@function hsluv-lch($tuple) {
+  $h: nth($tuple, 1);
+  $s: nth($tuple, 2);
+  $l: nth($tuple, 3);
+  $c: 0;
+  // white and black: disambiguate chroma
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
+    $max: functions.max-chroma-for-l-h($l, $h);
+    $c: $max / 100 * $s;
+  }
+  @return ($l, $c, $h);
+}
+
+// @param {Tuple} $tuple
+// @return {Tuple}
+@function hpluv-lch($tuple) {
+  $h: nth($tuple, 1);
+  $s: nth($tuple, 2);
+  $l: nth($tuple, 3);
+  $c: 0;
+  // white and black: disambiguate chroma
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
+    $max: functions.max-safe-chroma-for-l($l);
+    $c: $max / 100 * $s;
+  }
+  @return ($l, $c, $h);
+}
+
+// @param {Tuple} $tuple
+// @return {Tuple}
+@function xyz-rgb($tuple) {
+  $r: functions.from-linear(functions.dot-product(map-get(constants.$m, r), $tuple)) * 255;
+  $g: functions.from-linear(functions.dot-product(map-get(constants.$m, g), $tuple)) * 255;
+  $b: functions.from-linear(functions.dot-product(map-get(constants.$m, b), $tuple)) * 255;
+
   @return ($r, $g, $b);
 }
 
 // @param {Tuple} $tuple
 // @return {Tuple}
-@function conv-rgb-xyz($tuple) {
-  $r: nth($tuple, 1) / 255;
-  $g: nth($tuple, 2) / 255;
-  $b: nth($tuple, 3) / 255;
-  $rgbl: (to-linear($r), to-linear($g), to-linear($b));
-  $x: dot-product(map-get($m_inv, x), $rgbl);
-  $y: dot-product(map-get($m_inv, y), $rgbl);
-  $z: dot-product(map-get($m_inv, z), $rgbl);
-  @return ($x, $y, $z);
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-xyz-luv($tuple) {
-  $x: nth($tuple, 1);
-  $y: nth($tuple, 2);
-  $z: nth($tuple, 3);
-  // black will create a divide-by-zero error in
-  // the following two lines
-  @if $y == 0 {
-    @return (0, 0, 0);
-  }
-  $l: y-to-l($y);
-  $var-u: (4 * $x) / ($x + (15 * $y) + (3 * $z));
-  $var-v: (9 * $y) / ($x + (15 * $y) + (3 * $z));
-  $u: 13 * $l * ($var-u - $ref-u);
-  $v: 13 * $l * ($var-v - $ref-v);
-  @return ($l, $u, $v);
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-luv-xyz($tuple) {
+@function luv-xyz($tuple) {
   $l: nth($tuple, 1);
   $u: nth($tuple, 2);
   $v: nth($tuple, 3);
@@ -55,9 +65,9 @@
   @if $l == 0 {
     @return (0, 0, 0);
   }
-  $var-u: $u / (13 * $l) + $ref-u;
-  $var-v: $v / (13 * $l) + $ref-v;
-  $y: l-to-y($l);
+  $var-u: $u / (13 * $l) + constants.$ref-u;
+  $var-v: $v / (13 * $l) + constants.$ref-v;
+  $y: functions.l-to-y($l);
   $x: 0 - (9 * $y * $var-u) / (($var-u - 4) * $var-v - $var-u * $var-v);
   $z: (9 * $y - (15 * $var-v * $y) - ($var-v * $x)) / (3 * $var-v);
   @return ($x, $y, $z);
@@ -65,168 +75,13 @@
 
 // @param {Tuple} $tuple
 // @return {Tuple}
-@function conv-luv-lch($tuple) {
-  $l: nth($tuple, 1);
-  $u: nth($tuple, 2);
-  $v: nth($tuple, 3);
-  $c: sqrt(pow($u, 2) + pow($v, 2));
-  $h: 0;
-  // greys: disambiguate hue
-  @if $c >= 0.00000001 {
-    $h-rad: atan2($v, $u);
-    $h: $h-rad * 360 / 2 / $PI;
-    @if $h < 0 {
-      $h: 360 + $h;
-    }
-  }
-  @return ($l, $c, $h);
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-lch-luv($tuple) {
+@function lch-luv($tuple) {
   $l: nth($tuple, 1);
   $c: nth($tuple, 2);
   $h: nth($tuple, 3);
-  $h-rad: $h / 360 * 2 * $PI;
-  $u: cos($h-rad) * $c;
-  $v: sin($h-rad) * $c;
+  $h-rad: $h / 360 * 2 * math.$pi;
+  $u: math.cos($h-rad) * $c;
+  $v: math.sin($h-rad) * $c;
+
   @return ($l, $u, $v);
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-hsluv-lch($tuple) {
-  $h: nth($tuple, 1);
-  $s: nth($tuple, 2);
-  $l: nth($tuple, 3);
-  $c: 0;
-  // white and black: disambiguate chroma
-  @if not ($l > 99.9999999 or $l < 0.00000001) {
-    $max: max-chroma-for-l-h($l, $h);
-    $c: $max / 100 * $s;
-  }
-  @return ($l, $c, $h);
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-lch-hsluv($tuple) {
-  $l: nth($tuple, 1);
-  $c: nth($tuple, 2);
-  $h: nth($tuple, 3);
-  $s: 0;
-  // white and black: disambiguate saturation
-  @if not ($l > 99.9999999 or $l < 0.00000001) {
-    $max: max-chroma-for-l-h($l, $h);
-    $s: $c / $max * 100;
-  }
-  @return ($h, $s, $l);
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-hpluv-lch($tuple) {
-  $h: nth($tuple, 1);
-  $s: nth($tuple, 2);
-  $l: nth($tuple, 3);
-  $c: 0;
-  // white and black: disambiguate chroma
-  @if not ($l > 99.9999999 or $l < 0.00000001) {
-    $max: max-safe-chroma-for-l($l);
-    $c: $max / 100 * $s;
-  }
-  @return ($l, $c, $h);
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-lch-hpluv($tuple) {
-  $l: nth($tuple, 1);
-  $c: nth($tuple, 2);
-  $h: nth($tuple, 3);
-  $s: 0;
-  // White and black: disambiguate saturation
-  @if not ($l > 99.9999999 or $l < 0.00000001) {
-    $max: max-safe-chroma-for-l($l);
-    $s: $c / $max * 100;
-  }
-  @return ($h, $s, $l);
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-rgb-hex($tuple) {
-  $hex: "#";
-  @each $ch in $tuple {
-    // Round to 4 decimal places
-    $ch: round($ch * 10000) / 10000;
-    @if $ch < -0.0001 or $ch > 255.0001 {
-      @error "Illegal rgb value: #{$ch} from #{$tuple}";
-    }
-    @if $ch < 0 {
-      $ch: 0;
-    } @else if $ch > 255 {
-      $ch: 255;
-    }
-    $ch: dec-to-hex(round($ch));
-    @if str-length($ch) == 1 {
-      $ch: "0" + inspect($ch);
-    }
-    $hex: $hex + $ch;
-  }
-  @return $hex;
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-hex-rgb($hex) {
-  @if type-of($hex) == string {
-    $hex: unquote($hex);
-  } @else {
-    $hex: inspect($hex);
-  }
-  @if str-slice($hex, 1, 1) == "#" {
-    $hex: str-slice($hex, 2, 8);
-  }
-  $r: hex-to-dec(str-slice($hex, 1, 2));
-  $g: hex-to-dec(str-slice($hex, 3, 4));
-  $b: hex-to-dec(str-slice($hex, 5, 6));
-  @return ($r, $g, $b);
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-lch-rgb($tuple) {
-  @return conv-xyz-rgb(conv-luv-xyz(conv-lch-luv($tuple)));
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-rgb-lch($tuple) {
-  @return conv-luv-lch(conv-xyz-luv(conv-rgb-xyz($tuple)));
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-hsluv-rgb($tuple) {
-  @return conv-lch-rgb(conv-hsluv-lch($tuple));
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-rgb-hsluv($tuple) {
-  @return conv-lch-hsluv(conv-rgb-lch($tuple));
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-hpluv-rgb($tuple) {
-  @return conv-lch-rgb(conv-hpluv-lch($tuple));
-}
-
-// @param {Tuple} $tuple
-// @return {Tuple}
-@function conv-rgb-hpluv($tuple) {
-  @return conv-lch-hpluv(conv-rgb-lch($tuple));
 }

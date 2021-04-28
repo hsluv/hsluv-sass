@@ -1,4 +1,6 @@
-@import "hsluv-conversions";
+@use "./conversions" as conversions;
+@use "./colors" as colors;
+@use "./utils" as utils;
 
 @function hsluv($hue, $saturation, $lightness) {
   @if unit($saturation) == "%" {
@@ -7,7 +9,7 @@
   @if unit($lightness) == "%" {
     $lightness: $lightness / 1%;
   }
-  @return rgb-color(hsluv-to-rgb(($hue, $saturation, $lightness)));
+  @return colors.rgb-color(utils.hsluv-to-rgb(($hue, $saturation, $lightness)));
 }
 
 @function hpluv($hue, $saturation, $lightness) {
@@ -17,7 +19,7 @@
   @if unit($lightness) == "%" {
     $lightness: $lightness / 1%;
   }
-  @return rgb-color(hpluv-to-rgb(($hue, $saturation, $lightness)));
+  @return colors.rgb-color(utils.hpluv-to-rgb(($hue, $saturation, $lightness)));
 }
 
 @function hsluva($hue, $saturation, $lightness, $alpha) {
