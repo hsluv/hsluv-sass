@@ -1,22 +1,20 @@
 {
   "name": "hsluv-sass",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "HSLuv Sass - Human friendly HSL",
   "main": "src/_hsluv.scss",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "node-sass test/specs.scss"
+    "test": "sass test/hsluv-tests.scss",
+    "try": "sass test.scss"
   },
   "author": "Cameron Little <cameron@camlittle.com>",
   "license": "MIT",
-  "dependencies": {
-    "mathsass": "^0.9.5",
-    "node-sass": "^4.1.1"
-  },
   "devDependencies": {
-    "bootcamp": "git://github.com/apexskier/bootcamp.git#6bbc62849abb5fe10f3259f99a6e89108c7f96c5"
+    "sass": "^1.32.11",
+    "sass-true": "^6.0.1"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,3 @@
+@function rgb-color($rgb) {
+  @return rgb(nth($rgb, 1), nth($rgb, 2), nth($rgb, 3));
+}

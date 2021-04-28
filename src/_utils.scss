@@ -1,0 +1,9 @@
+@use "conversions" as conversions;
+
+@function hsluv-to-rgb($hsl) {
+  @return conversions.hsluv-rgb($hsl);
+}
+
+@function hpluv-to-rgb($hsl) {
+  @return conversions.xyz-rgb(conversions.luv-xyz(conversions.lch-luv(conversions.hpluv-lch($hsl))));
+}
