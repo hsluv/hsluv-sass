@@ -17,6 +17,18 @@
 
 // @param {Tuple} $tuple
 // @return {Tuple}
+@function rgb-lch($tuple) {
+  @return luv-lch(xyz-luv(rgb-xyz($tuple)));
+}
+
+// @param {Tuple} $tuple
+// @return {Tuple}
+@function rgb-hsluv($tuple) {
+  @return lch-hsluv(rgb-lch($tuple));
+}
+
+// @param {Tuple} $tuple
+// @return {Tuple}
 @function hsluv-lch($tuple) {
   $h: nth($tuple, 1);
   $s: nth($tuple, 2);
@@ -28,6 +40,21 @@
     $c: $max / 100 * $s;
   }
   @return ($l, $c, $h);
+}
+
+// @param {Tuple} $tuple
+// @return {Tuple}
+@function lch-hsluv($tuple) {
+  $l: nth($tuple, 1);
+  $c: nth($tuple, 2);
+  $h: nth($tuple, 3);
+  $s: 0;
+  // white and black: disambiguate saturation
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
+    $max: functions.max-chroma-for-l-h($l, $h);
+    $s: $c / $max * 100;
+  }
+  @return ($h, $s, $l);
 }
 
 // @param {Tuple} $tuple
@@ -57,6 +84,19 @@
 
 // @param {Tuple} $tuple
 // @return {Tuple}
+@function rgb-xyz($tuple) {
+  $r: nth($tuple, 1) / 255;
+  $g: nth($tuple, 2) / 255;
+  $b: nth($tuple, 3) / 255;
+  $rgbl: (functions.to-linear($r), functions.to-linear($g), functions.to-linear($b));
+  $x: functions.dot-product(map-get(constants.$m_inv, x), $rgbl);
+  $y: functions.dot-product(map-get(constants.$m_inv, y), $rgbl);
+  $z: functions.dot-product(map-get(constants.$m_inv, z), $rgbl);
+  @return ($x, $y, $z);
+}
+
+// @param {Tuple} $tuple
+// @return {Tuple}
 @function luv-xyz($tuple) {
   $l: nth($tuple, 1);
   $u: nth($tuple, 2);
@@ -75,6 +115,25 @@
 
 // @param {Tuple} $tuple
 // @return {Tuple}
+@function xyz-luv($tuple) {
+  $x: nth($tuple, 1);
+  $y: nth($tuple, 2);
+  $z: nth($tuple, 3);
+  // black will create a divide-by-zero error in
+  // the following two lines
+  @if $y == 0 {
+    @return (0, 0, 0);
+  }
+  $l: functions.y-to-l($y);
+  $var-u: (4 * $x) / ($x + (15 * $y) + (3 * $z));
+  $var-v: (9 * $y) / ($x + (15 * $y) + (3 * $z));
+  $u: 13 * $l * ($var-u - constants.$ref-u);
+  $v: 13 * $l * ($var-v - constants.$ref-v);
+  @return ($l, $u, $v);
+}
+
+// @param {Tuple} $tuple
+// @return {Tuple}
 @function lch-luv($tuple) {
   $l: nth($tuple, 1);
   $c: nth($tuple, 2);
@@ -84,4 +143,24 @@
   $v: math.sin($h-rad) * $c;
 
   @return ($l, $u, $v);
+}
+
+// @param {Tuple} $tuple
+// @return {Tuple}
+@function luv-lch($tuple) {
+  $l: nth($tuple, 1);
+  $u: nth($tuple, 2);
+  $v: nth($tuple, 3);
+  $c: math.sqrt(math.pow($u, 2) + math.pow($v, 2));
+  $h: 0;
+  // greys: disambiguate hue
+  @if $c >= 0.00000001 {
+    $h: math.atan2($v, $u);
+
+    @if $h < 0deg {
+      $h: 360deg + $h;
+    }
+  }
+  $h: $h / ($h * 0 + 1); // TODO: consider using deg units natively
+  @return ($l, $c, $h);
 }

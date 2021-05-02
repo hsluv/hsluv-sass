@@ -9,6 +9,17 @@
   @return if($c <= 0.0031308, 12.92 * $c, 1.055 * math.pow($c, 1 / 2.4) - 0.055);
 }
 
+// @param {number} $c
+// @return {number}
+@function to-linear($c) {
+  $a: 0.055;
+  @if $c > 0.04045 {
+    @return math.pow(($c + $a) / (1 + $a), 2.4);
+  } @else {
+    @return $c / 12.92;
+  }
+}
+
 // @param {number[]} $a
 // @param {number[]} $b
 // @return {number}
@@ -107,6 +118,7 @@
   $m1: nth($line, 1);
   $b1: nth($line, 2);
   $len: $b1 / (math.sin($theta) - $m1 * math.cos($theta));
+
   @return if($len < 0, null, $len);
 }
 
@@ -130,5 +142,19 @@
     @return $l / constants.$kappa;
   } @else {
     @return math.pow(($l + 16) / 116, 3);
+  }
+}
+
+// http://en.wikipedia.org/wiki/CIELUV
+// In these formulas, Yn refers to the reference white point. We are using
+// illuminant D65, so Yn (see refY in Maxima file) equals 1. The formula is
+// simplified accordingly.
+// @param {number} $y
+// @return {number}
+@function y-to-l($y) {
+  @if $y <= constants.$epsilon {
+    @return $y * constants.$kappa;
+  } @else {
+    @return 116 * math.pow($y, 1/3) - 16;
   }
 }

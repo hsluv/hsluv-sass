@@ -1,0 +1,30 @@
+@use '../node_modules/sass-true' as *;
+
+@import "../src/utils";
+@import "../src/colors";
+
+@include describe("hsluv-to-rgb function") {
+  @include it("should work") {
+    @include assert-equal(hsluv-to-rgb((0, 0, 0)), (0, 0, 0));
+    // This color supposed to return 255, 0, 136 but returns 255, 4.3767154484, 136
+    @include assert-equal(rgb-color(hsluv-to-rgb((352.754628092234327, 99.9999999999991616, 55.1148373309560782))), #ff0088);
+    @include assert-equal(hsluv-to-rgb((101.26222245755217, 100.0000000000023, 71.08593613187027)), (153, 187, 0));
+  }
+}
+
+@include describe('hpluv-to-rgb function') {
+  @include it("should work") {
+    @include assert-equal(hpluv-to-rgb((0, 0, 0)), (0, 0, 0));
+    @include assert-equal(rgb-color(hpluv-to-rgb((352.754628092234327,321.26675874055752,55.1148373309560782))), #ff0088);
+    @include assert-equal(hpluv-to-rgb((101.26222245755217, 147.074503152999483, 71.0859361318702696)), (153, 187, 0));
+  }
+}
+
+@include describe('hsluv-from-rgb function') {
+  @include it("should work") {
+    @include assert-equal(hsluv-from-rgb((0, 0, 0)), (0, 0, 0));
+    @include assert-equal(hsluv-from-rgb((153, 187, 0)), (101.26222245755217, 100.0000000000023, 71.08593613187027));
+    @include assert-equal(hsluv-from-rgb(hsluv-to-rgb((101.26222245755217, 100.0000000000023, 71.08593613187027))), (101.26222245755217, 100.0000000000023, 71.08593613187027));
+    @include assert-equal(rgb-color(hsluv-to-rgb(hsluv-from-rgb((153, 187, 0)))), rgb(153, 187, 0));
+  }
+}
