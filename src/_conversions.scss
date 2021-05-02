@@ -153,9 +153,12 @@
   $l: nth($tuple, 1);
   $c: nth($tuple, 2);
   $h: nth($tuple, 3);
-  $h-rad: $h / 360 * 2 * math.$pi;
-  $u: math.cos($h-rad) * $c;
-  $v: math.sin($h-rad) * $c;
+  @if math.is-unitless($h) {
+    $h: $h * 1deg;
+  }
+
+  $u: math.cos($h) * $c;
+  $v: math.sin($h) * $c;
 
   @return ($l, $u, $v);
 }
@@ -176,6 +179,6 @@
       $h: 360deg + $h;
     }
   }
-  $h: $h / ($h * 0 + 1); // TODO: consider using deg units natively
+
   @return ($l, $c, $h);
 }
