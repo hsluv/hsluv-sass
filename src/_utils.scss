@@ -7,3 +7,11 @@
 @function hpluv-to-rgb($hsl) {
   @return conversions.xyz-rgb(conversions.luv-xyz(conversions.lch-luv(conversions.hpluv-lch($hsl))));
 }
+
+@function hsluv-from-rgb($rgb) {
+  @return conversions.rgb-hsluv($rgb);
+}
+
+@function hpluv-from-rgb($rgb) {
+  @return conversions.lch-hpluv(conversions.luv-lch(conversions.xyz-luv(conversions.rgb-xyz($rgb))));
+}
