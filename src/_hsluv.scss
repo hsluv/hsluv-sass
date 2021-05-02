@@ -29,3 +29,11 @@
 @function hpluva($hue, $saturation, $lightness, $alpha) {
   @return rgba(hpluv($hue, $saturation, $lightness), $alpha);
 }
+
+@function to_hsluv($color) {
+  @return utils.hsluv-from-rgb((red($color), green($color), blue($color)));
+}
+
+@function to_hpluv($color) {
+  @return utils.hpluv-from-rgb((red($color), green($color), blue($color)));
+}
