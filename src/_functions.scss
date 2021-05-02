@@ -37,11 +37,14 @@
 // @param {number} $h
 // @return {number}
 @function max-chroma-for-l-h($l, $h) {
-  $hrad: $h / 360 * math.$pi * 2;
+  @if math.is-unitless($h) {
+    $h: $h * 1deg;
+  }
+
   $lengths: ();
 
   @each $line in get-bounds($l) {
-    $l: length-of-ray-until-intersect($hrad, $line);
+    $l: length-of-ray-until-intersect($h, $line);
     @if $l != null {
       $lengths: append($lengths, $l);
     }
