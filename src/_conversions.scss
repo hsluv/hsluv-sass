@@ -74,6 +74,21 @@
 
 // @param {Tuple} $tuple
 // @return {Tuple}
+@function lch-hpluv($tuple) {
+  $l: nth($tuple, 1);
+  $c: nth($tuple, 2);
+  $h: nth($tuple, 3);
+  $s: 0;
+  // White and black: disambiguate saturation
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
+    $max: functions.max-safe-chroma-for-l($l);
+    $s: $c / $max * 100;
+  }
+  @return ($h, $s, $l);
+}
+
+// @param {Tuple} $tuple
+// @return {Tuple}
 @function xyz-rgb($tuple) {
   $r: functions.from-linear(functions.dot-product(map-get(constants.$m, r), $tuple)) * 255;
   $g: functions.from-linear(functions.dot-product(map-get(constants.$m, g), $tuple)) * 255;
