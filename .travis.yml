@@ -1,13 +1,6 @@
-langauge: ruby
-rvm:
-  - 2.4.0
-env:
-  - SASS_VERSION="~> 3.1"
-  - SASS_VERSION="~> 3.2"
-  - SASS_VERSION="~> 3.3"
-  - SASS_VERSION="~> 3.4"
-install:
-  - npm install
-  - gem install sass -v "${SASS_VERSION}"
-script:
-  - sass test/specs.scss
+language: node_js
+node_js:
+  - node
+  - lts/*
+before_script:
+  - npm install -g gulp-cli
