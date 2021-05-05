@@ -1,34 +1,63 @@
-@use "sass:math";
+@use 'sass:map';
+@use 'sass:math';
 
-@use "./constants" as constants;
+@use '../constants' as const;
 
-// Used for rgb conversions
-// @param {number} $c
-// @return {number}
-@function from-linear($c) {
-  @return if($c <= 0.0031308, 12.92 * $c, 1.055 * math.pow($c, 1 / 2.4) - 0.055);
+@function from-hsluv($hsluv) {
+  $h: map.get($hsluv, 'h');
+  $s: map.get($hsluv, 's');
+  $l: map.get($hsluv, 'l');
+
+  $c: 0;
+  // white and black: disambiguate chroma
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
+    $max: max-chroma-for-l-h($l, $h);
+    $c: $max / 100 * $s;
+  }
+
+  @return ('l': $l, 'c': $c, 'h': $h);
 }
 
-// @param {number} $c
-// @return {number}
-@function to-linear($c) {
-  $a: 0.055;
-  @if $c > 0.04045 {
-    @return math.pow(($c + $a) / (1 + $a), 2.4);
-  } @else {
-    @return $c / 12.92;
+@function from-hpluv($hpluv) {
+  $h: map.get($hpluv, 'h');
+  $s: map.get($hpluv, 's');
+  $l: map.get($hpluv, 'l');
+
+  $c: 0;
+  // white and black: disambiguate chroma
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
+    $max: max-safe-chroma-for-l($l);
+    $c: $max / 100 * $s;
   }
+  @return ('l': $l, 'c': $c, 'h': $h);
 }
 
-// @param {number[]} $a
-// @param {number[]} $b
-// @return {number}
-@function dot-product($a, $b) {
-  $ret: 0;
-  @for $i from 1 through length($a) {
-    $ret: $ret + nth($a, $i) * nth($b, $i);
+@function to-hsluv($lch) {
+  $l: map.get($lch, 'l');
+  $c: map.get($lch, 'c');
+  $h: map.get($lch, 'h');
+
+  $s: 0;
+  // white and black: disambiguate saturation
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
+    $max: max-chroma-for-l-h($l, $h);
+    $s: $c / $max * 100;
   }
-  @return $ret;
+  @return ('h': $h, 's': $s, 'l': $l);
+}
+
+@function to-hpluv($lch) {
+  $l: map.get($lch, 'l');
+  $c: map.get($lch, 'c');
+  $h: map.get($lch, 'h');
+
+  $s: 0;
+  // white and black: disambiguate saturation
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
+    $max: max-safe-chroma-for-l($l);
+    $s: $c / $max * 100;
+  }
+  @return ('h': $h, 's': $s, 'l': $l);
 }
 
 // For a given lightness and hue, return the maximum chroma that fits in
@@ -37,10 +66,6 @@
 // @param {number} $h
 // @return {number}
 @function max-chroma-for-l-h($l, $h) {
-  @if math.is-unitless($h) {
-    $h: $h * 1deg;
-  }
-
   $lengths: ();
 
   @each $line in get-bounds($l) {
@@ -79,10 +104,10 @@
 // @return {number[][2]}
 @function get-bounds($l) {
   $sub1: math.pow($l + 16, 3) / 1560896;
-  $sub2: if($sub1 > constants.$epsilon, $sub1, $l / constants.$kappa);
+  $sub2: if($sub1 > const.$epsilon, $sub1, $l / const.$kappa);
   $ret: ();
   @each $channel in (r, g, b) {
-    $m_: map-get(constants.$m, $channel);
+    $m_: map.get(const.$m, $channel);
     $m1: nth($m_, 1);
     $m2: nth($m_, 2);
     $m3: nth($m_, 3);
@@ -125,39 +150,15 @@
   @return if($len < 0, null, $len);
 }
 
-// @param {number[2]} $line1
-// @param {number[2]} $line2
-// @return {number}
-@function intersect-line-line($line1, $line2) {
-  @return (nth($line1, 2) - nth($line2, 2)) / (nth($line2, 1) - nth($line1, 1));
-}
-
 // @param {number[2]} $point
 // @return {number}
 @function distance-from-pole($point) {
   @return math.sqrt(math.pow(nth($point, 1), 2) + math.pow(nth($point, 2), 2));
 }
 
-// @param {number} $l
+// @param {number[2]} $line1
+// @param {number[2]} $line2
 // @return {number}
-@function l-to-y($l) {
-  @if $l <= 8 {
-    @return $l / constants.$kappa;
-  } @else {
-    @return math.pow(($l + 16) / 116, 3);
-  }
-}
-
-// http://en.wikipedia.org/wiki/CIELUV
-// In these formulas, Yn refers to the reference white point. We are using
-// illuminant D65, so Yn (see refY in Maxima file) equals 1. The formula is
-// simplified accordingly.
-// @param {number} $y
-// @return {number}
-@function y-to-l($y) {
-  @if $y <= constants.$epsilon {
-    @return $y * constants.$kappa;
-  } @else {
-    @return 116 * math.pow($y, 1/3) - 16;
-  }
+@function intersect-line-line($line1, $line2) {
+  @return (nth($line1, 2) - nth($line2, 2)) / (nth($line2, 1) - nth($line1, 1));
 }
