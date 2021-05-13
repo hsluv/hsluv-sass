@@ -1,4 +1,5 @@
 @use './conversions' as conv;
+@use './conversions/xyz' as xyz;
 
 @function hsluv($hue, $saturation: null, $lightness: null) {
   $hsluv: conv.args-hsl($hue, $saturation, $lightness);
@@ -60,4 +61,36 @@
     'g': green($color),
     'b': blue($color)
   ));
+}
+
+@function contrast-darken($hsluv, $ratio: 4.5 / 1) {
+  $h: map-get($hsluv, 'h');
+  $s: map-get($hsluv, 's');
+  $l: map-get($hsluv, 'l');
+
+  $y: xyz.l-to-y($l);
+
+  $maxY: (20 * $y - $ratio + 1) / (20 * $ratio);
+
+  @return (
+    'h': $h,
+    's': $s,
+    'l': xyz.y-to-l($maxY)
+  );
+}
+
+@function contrast-lighten($hsluv, $ratio: 4.5 / 1) {
+  $h: map-get($hsluv, 'h');
+  $s: map-get($hsluv, 's');
+  $l: map-get($hsluv, 'l');
+
+  $y: xyz.l-to-y($l);
+
+  $minY: (20 * $ratio * $y + $ratio - 1) / 20;
+
+  @return (
+    'h': $h,
+    's': $s,
+    'l': xyz.y-to-l($minY)
+  );
 }
