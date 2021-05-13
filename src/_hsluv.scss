@@ -1,23 +1,8 @@
 @use './conversions' as conv;
 
 @function hsluv($hue, $saturation: null, $lightness: null) {
-  @if (not $saturation and not $lightness) {
-    $saturation: map-get($hue, 's');
-    $lightness:  map-get($hue, 'l');
-    $hue:        map-get($hue, 'h');
-  }
-
-  @if unitless($hue) {
-    $hue: $hue * 1deg;
-  }
-  @if unit($saturation) == "%" {
-    $saturation: $saturation / 1%;
-  }
-  @if unit($lightness) == "%" {
-    $lightness: $lightness / 1%;
-  }
-
-  $rgb: conv.hsluv-rgb(('h': $hue, 's': $saturation, 'l': $lightness));
+  $hsluv: conv.args-hsl($hue, $saturation, $lightness);
+  $rgb: conv.hsluv-rgb($hsluv);
 
   @return rgb(
     map-get($rgb, 'r'),
@@ -27,28 +12,37 @@
 }
 
 @function hpluv($hue, $saturation: null, $lightness: null) {
-  @if (not $saturation and not $lightness) {
-    $saturation: map-get($hue, 's');
-    $lightness:  map-get($hue, 'l');
-    $hue:        map-get($hue, 'h');
-  }
-
-  @if unitless($hue) {
-    $hue: $hue * 1deg;
-  }
-  @if unit($saturation) == "%" {
-    $saturation: $saturation / 1%;
-  }
-  @if unit($lightness) == "%" {
-    $lightness: $lightness / 1%;
-  }
-
-  $rgb: conv.hpluv-rgb(('h': $hue, 's': $saturation, 'l': $lightness));
+  $hpluv: conv.args-hsl($hue, $saturation, $lightness);
+  $rgb: conv.hpluv-rgb($hpluv);
 
   @return rgb(
     map-get($rgb, 'r'),
     map-get($rgb, 'g'),
     map-get($rgb, 'b')
+  );
+}
+
+@function hsluva($hue, $saturation: null, $lightness: null, $alpha: 1) {
+  $hsluv: conv.args-hsl($hue, $saturation, $lightness);
+  $rgb: conv.hsluv-rgb($hsluv);
+
+  @return rgba(
+    map-get($rgb, 'r'),
+    map-get($rgb, 'g'),
+    map-get($rgb, 'b'),
+    $alpha
+  );
+}
+
+@function hpluva($hue, $saturation: null, $lightness: null, $alpha: 1) {
+  $hpluv: conv.args-hsl($hue, $saturation, $lightness);
+  $rgb: conv.hpluv-rgb($hpluv);
+
+  @return rgba(
+    map-get($rgb, 'r'),
+    map-get($rgb, 'g'),
+    map-get($rgb, 'b'),
+    $alpha
   );
 }
 
