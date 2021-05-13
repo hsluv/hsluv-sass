@@ -1,6 +1,12 @@
 @use './conversions' as conv;
 
-@function hsluv($hue, $saturation, $lightness) {
+@function hsluv($hue, $saturation: null, $lightness: null) {
+  @if (not $saturation and not $lightness) {
+    $saturation: map-get($hue, 's');
+    $lightness:  map-get($hue, 'l');
+    $hue:        map-get($hue, 'h');
+  }
+
   @if unitless($hue) {
     $hue: $hue * 1deg;
   }
@@ -20,7 +26,13 @@
   );
 }
 
-@function hpluv($hue, $saturation, $lightness) {
+@function hpluv($hue, $saturation: null, $lightness: null) {
+  @if (not $saturation and not $lightness) {
+    $saturation: map-get($hue, 's');
+    $lightness:  map-get($hue, 'l');
+    $hue:        map-get($hue, 'h');
+  }
+
   @if unitless($hue) {
     $hue: $hue * 1deg;
   }
