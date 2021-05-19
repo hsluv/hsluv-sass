@@ -22,7 +22,8 @@
   "keywords": [
     "color",
     "sass",
-    "hsluv"
+    "hsluv",
+    "hpluv"
   ],
   "bugs": {
     "url": "https://github.com/hsluv/hsluv-sass/issues"

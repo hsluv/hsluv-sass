@@ -25,8 +25,10 @@ npm install hsluv-sass
 
 ### Example
 
-```sass
-@import "../node_modules/hsluv-sass/src/hsluv";
+Create `demo.csss`:
+
+```scss
+@import "./node_modules/hsluv-sass/src/hsluv";
 
 .example {
   color: hsluv(23.2, 83.4%, 43.7%);
@@ -34,7 +36,13 @@ npm install hsluv-sass
 }
 ```
 
-[Compiled demo](http://codepen.io/apexskier/pen/LZbybw) generated from [`demo.scss`](https://github.com/hsluv/hsluv-sass/blob/master/test/demo.scss).
+```bash
+$ npx sass demo.scss 
+.example {
+  color: #a84c27;
+  background-color: #738fc0;
+}
+```
 
 ## Testing
 
@@ -52,6 +60,4 @@ Have a question or need help? [Open an issue](https://github.com/hsluv/hsluv-sas
 
 This project is provided under the terms of the [MIT License](LICENSE).
 
----
-
- by **Cameron Little** · [Github](https://github.com/apexskier) · [Twitter](https://twitter.com/apexskier) · [CodePen](https://codepen.com/apexskier)
+Original version by **Cameron Little** · [Github](https://github.com/apexskier) · [Twitter](https://twitter.com/apexskier) · [CodePen](https://codepen.com/apexskier)
