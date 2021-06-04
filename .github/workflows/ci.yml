@@ -3,12 +3,37 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Cache Node dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-14-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-14-node-
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint
+
   build:
     strategy:
       matrix:
@@ -17,7 +42,7 @@ jobs:
           - macos-latest
           - windows-latest
         node: ['10', '12', '14']
-    name: Node ${{ matrix.node_version }} on ${{ matrix.os }}
+    name: Test - node ${{ matrix.node_version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -40,6 +65,3 @@ jobs:
 
       - name: Test
         run: npm run test
-
-      - name: Lint
-        run: npm run lint
