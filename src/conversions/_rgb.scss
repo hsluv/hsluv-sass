@@ -4,31 +4,31 @@
 @use '../constants' as const;
 
 @function from-xyz($xyz) {
-  $tuple: (map.get($xyz, "x"), map.get($xyz, "y"), map.get($xyz, "z"));
+  $tuple: (map.get($xyz, 'x'), map.get($xyz, 'y'), map.get($xyz, 'z'));
 
-  $r: dot-product(map.get(const.$m, "r"), $tuple);
-  $g: dot-product(map.get(const.$m, "g"), $tuple);
-  $b: dot-product(map.get(const.$m, "b"), $tuple);
+  $r: dot-product(map.get(const.$m, 'r'), $tuple);
+  $g: dot-product(map.get(const.$m, 'g'), $tuple);
+  $b: dot-product(map.get(const.$m, 'b'), $tuple);
 
   @return (
-    "r": math.round(from-linear($r) * 255),
-    "g": math.round(from-linear($g) * 255),
-    "b": math.round(from-linear($b) * 255)
+    'r': math.round(from-linear($r) * 255),
+    'g': math.round(from-linear($g) * 255),
+    'b': math.round(from-linear($b) * 255)
   );
 }
 
 @function to-xyz($rgb) {
-  $r: map.get($rgb, "r") / 255;
-  $g: map.get($rgb, "g") / 255;
-  $b: map.get($rgb, "b") / 255;
+  $r: map.get($rgb, 'r') / 255;
+  $g: map.get($rgb, 'g') / 255;
+  $b: map.get($rgb, 'b') / 255;
 
   $tuple: (to-linear($r), to-linear($g), to-linear($b));
 
-  $x: dot-product(map.get(const.$m_inv, "x"), $tuple);
-  $y: dot-product(map.get(const.$m_inv, "y"), $tuple);
-  $z: dot-product(map.get(const.$m_inv, "z"), $tuple);
+  $x: dot-product(map.get(const.$m_inv, 'x'), $tuple);
+  $y: dot-product(map.get(const.$m_inv, 'y'), $tuple);
+  $z: dot-product(map.get(const.$m_inv, 'z'), $tuple);
 
-  @return ("x": $x, "y": $y, "z": $z);
+  @return ('x': $x, 'y': $y, 'z': $z);
 }
 
 // @private
@@ -36,11 +36,7 @@
 // @param {number} $c
 // @return {number}
 @function from-linear($c) {
-  @return if(
-    $c <= 0.0031308,
-    12.92 * $c,
-    1.055 * math.pow($c, 1 / 2.4) - 0.055
-  );
+  @return if($c <= 0.0031308, 12.92 * $c, 1.055 * math.pow($c, 1 / 2.4) - 0.055);
 }
 
 // @param {number} $c

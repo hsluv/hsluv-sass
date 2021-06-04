@@ -3,127 +3,81 @@
 @import "../src/hsluv";
 
 @include describe("hsluv function") {
-  @include it("should return SASS color") {
+  @include it('should return SASS color') {
     @include assert-equal(type-of(hsluv(0deg, 0, 0)), color);
   }
 
-  @include it("should accept hue as both deg and unitless value") {
+  @include it('should accept hue as both deg and unitless value') {
     @include assert-equal(hsluv(212deg, 88, 54), #2f8d9d);
     @include assert-equal(hsluv(212, 88, 54), #2f8d9d);
   }
 
-  @include it(
-    "should accept saturation and lightness as both percent and unitless value"
-  ) {
+  @include it('should accept saturation and lightness as both percent and unitless value') {
     @include assert-equal(hsluv(212deg, 88%, 54%), #2f8d9d);
     @include assert-equal(hsluv(212, 88, 54), #2f8d9d);
   }
 
-  @include it("should accept hsluv struct") {
-    @include assert-equal(
-      hsluv(
-        (
-          "h": 212deg,
-          "s": 88,
-          "l": 54,
-        )
-      ),
-      #2f8d9d
-    );
+  @include it('should accept hsluv struct') {
+    @include assert-equal(hsluv(('h': 212deg, 's': 88, 'l': 54)), #2f8d9d);
   }
 }
 
 @include describe("hpluv function") {
-  @include it("should return SASS color") {
+  @include it('should return SASS color') {
     @include assert-equal(type-of(hpluv(0deg, 0, 0)), color);
   }
 
-  @include it("should accept hue as both deg and unitless value") {
+  @include it('should accept hue as both deg and unitless value') {
     @include assert-equal(hpluv(212deg, 88, 54), #3d8c9b);
     @include assert-equal(hpluv(212, 88, 54), #3d8c9b);
   }
 
-  @include it(
-    "should accept saturation and lightness as both percent and unitless value"
-  ) {
+  @include it('should accept saturation and lightness as both percent and unitless value') {
     @include assert-equal(hpluv(212deg, 88%, 54%), #3d8c9b);
     @include assert-equal(hpluv(212, 88, 54), #3d8c9b);
   }
 
-  @include it("should accept hsluv struct") {
-    @include assert-equal(
-      hpluv(
-        (
-          "h": 212deg,
-          "s": 88,
-          "l": 54,
-        )
-      ),
-      #3d8c9b
-    );
+  @include it('should accept hsluv struct') {
+    @include assert-equal(hpluv(('h': 212deg, 's': 88, 'l': 54)), #3d8c9b);
   }
 }
 
 @include describe("hsluva function") {
-  @include it("should return SASS color") {
+  @include it('should return SASS color') {
     @include assert-equal(type-of(hsluva(0deg, 0, 0, 0)), color);
   }
 
-  @include it("should accept hue as both deg and unitless value") {
+  @include it('should accept hue as both deg and unitless value') {
     @include assert-equal(hsluva(212deg, 88, 54, 0.7), rgba(#2f8d9d, 0.7));
     @include assert-equal(hsluva(212, 88, 54, 0.7), rgba(#2f8d9d, 0.7));
   }
 
-  @include it(
-    "should accept saturation, lightness and alpha as both percent and unitless value"
-  ) {
+  @include it('should accept saturation, lightness and alpha as both percent and unitless value') {
     @include assert-equal(hsluva(212deg, 88%, 54%, 70%), rgba(#2f8d9d, 0.7));
     @include assert-equal(hsluva(212, 88, 54, 0.7), rgba(#2f8d9d, 0.7));
   }
 
-  @include it("should accept hsluv struct") {
-    @include assert-equal(
-      hsluva(
-        (
-          "h": 212deg,
-          "s": 88,
-          "l": 54,
-        ),
-        $alpha: 0.5
-      ),
-      rgba(#2f8d9d, 0.5)
-    );
+  @include it('should accept hsluv struct') {
+    @include assert-equal(hsluva(('h': 212deg, 's': 88, 'l': 54), $alpha: 0.5), rgba(#2f8d9d, 0.5));
   }
 }
 
 @include describe("hpluva function") {
-  @include it("should return SASS color") {
+  @include it('should return SASS color') {
     @include assert-equal(type-of(hpluva(0deg, 0, 0, 0)), color);
   }
 
-  @include it("should accept hue as both deg and unitless value") {
+  @include it('should accept hue as both deg and unitless value') {
     @include assert-equal(hpluva(212deg, 88, 54, 0.7), rgba(#3d8c9b, 0.7));
     @include assert-equal(hpluva(212, 88, 54, 0.7), rgba(#3d8c9b, 0.7));
   }
 
-  @include it(
-    "should accept saturation, lightness and alpha as both percent and unitless value"
-  ) {
+  @include it('should accept saturation, lightness and alpha as both percent and unitless value') {
     @include assert-equal(hpluva(212deg, 88%, 54%, 70%), rgba(#3d8c9b, 0.7));
     @include assert-equal(hpluva(212, 88, 54, 0.7), rgba(#3d8c9b, 0.7));
   }
 
-  @include it("should accept hsluv struct") {
-    @include assert-equal(
-      hpluva(
-        (
-          "h": 212deg,
-          "s": 88,
-          "l": 54,
-        ),
-        $alpha: 0.5
-      ),
-      rgba(#3d8c9b, 0.5)
-    );
+  @include it('should accept hsluv struct') {
+    @include assert-equal(hpluva(('h': 212deg, 's': 88, 'l': 54), $alpha: 0.5), rgba(#3d8c9b, 0.5));
   }
 }

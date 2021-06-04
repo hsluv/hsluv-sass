@@ -4,60 +4,60 @@
 @use '../constants' as const;
 
 @function from-hsluv($hsluv) {
-  $h: map.get($hsluv, "h");
-  $s: map.get($hsluv, "s");
-  $l: map.get($hsluv, "l");
+  $h: map.get($hsluv, 'h');
+  $s: map.get($hsluv, 's');
+  $l: map.get($hsluv, 'l');
 
   $c: 0;
   // white and black: disambiguate chroma
-  @if not($l > 99.9999999 or $l < 0.00000001) {
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
     $max: max-chroma-for-l-h($l, $h);
     $c: $max / 100 * $s;
   }
 
-  @return ("l": $l, "c": $c, "h": $h);
+  @return ('l': $l, 'c': $c, 'h': $h);
 }
 
 @function from-hpluv($hpluv) {
-  $h: map.get($hpluv, "h");
-  $s: map.get($hpluv, "s");
-  $l: map.get($hpluv, "l");
+  $h: map.get($hpluv, 'h');
+  $s: map.get($hpluv, 's');
+  $l: map.get($hpluv, 'l');
 
   $c: 0;
   // white and black: disambiguate chroma
-  @if not($l > 99.9999999 or $l < 0.00000001) {
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
     $max: max-safe-chroma-for-l($l);
     $c: $max / 100 * $s;
   }
-  @return ("l": $l, "c": $c, "h": $h);
+  @return ('l': $l, 'c': $c, 'h': $h);
 }
 
 @function to-hsluv($lch) {
-  $l: map.get($lch, "l");
-  $c: map.get($lch, "c");
-  $h: map.get($lch, "h");
+  $l: map.get($lch, 'l');
+  $c: map.get($lch, 'c');
+  $h: map.get($lch, 'h');
 
   $s: 0;
   // white and black: disambiguate saturation
-  @if not($l > 99.9999999 or $l < 0.00000001) {
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
     $max: max-chroma-for-l-h($l, $h);
     $s: $c / $max * 100;
   }
-  @return ("h": $h, "s": $s, "l": $l);
+  @return ('h': $h, 's': $s, 'l': $l);
 }
 
 @function to-hpluv($lch) {
-  $l: map.get($lch, "l");
-  $c: map.get($lch, "c");
-  $h: map.get($lch, "h");
+  $l: map.get($lch, 'l');
+  $c: map.get($lch, 'c');
+  $h: map.get($lch, 'h');
 
   $s: 0;
   // white and black: disambiguate saturation
-  @if not($l > 99.9999999 or $l < 0.00000001) {
+  @if not ($l > 99.9999999 or $l < 0.00000001) {
     $max: max-safe-chroma-for-l($l);
     $s: $c / $max * 100;
   }
-  @return ("h": $h, "s": $s, "l": $l);
+  @return ('h': $h, 's': $s, 'l': $l);
 }
 
 // For a given lightness and hue, return the maximum chroma that fits in
@@ -113,12 +113,7 @@
     $m3: nth($m_, 3);
     @for $t from 0 through 1 {
       $top1: (284517 * $m1 - 94839 * $m3) * $sub2;
-      $top2: (838422 * $m3 + 769860 * $m2 + 731718 * $m1) *
-        $l *
-        $sub2 -
-        769860 *
-        $t *
-        $l;
+      $top2: (838422 * $m3 + 769860 * $m2 + 731718 * $m1) * $l * $sub2 - 769860 * $t * $l;
       $bottom: (632260 * $m3 - 126452 * $m2) * $sub2 + 126452 * $t;
 
       $ret: append($ret, ($top1 / $bottom, $top2 / $bottom));

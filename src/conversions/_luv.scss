@@ -2,17 +2,21 @@
 @use 'sass:math';
 
 @function from-lch($lch) {
-  $l: map.get($lch, "l");
-  $c: map.get($lch, "c");
-  $h: map.get($lch, "h");
+  $l: map.get($lch, 'l');
+  $c: map.get($lch, 'c');
+  $h: map.get($lch, 'h');
 
-  @return ("l": $l, "u": math.cos($h) * $c, "v": math.sin($h) * $c);
+  @return (
+    'l': $l,
+    'u': math.cos($h) * $c,
+    'v': math.sin($h) * $c
+  );
 }
 
 @function to-lch($luv) {
-  $l: map.get($luv, "l");
-  $u: map.get($luv, "u");
-  $v: map.get($luv, "v");
+  $l: map.get($luv, 'l');
+  $u: map.get($luv, 'u');
+  $v: map.get($luv, 'v');
 
   $c: math.sqrt(math.pow($u, 2) + math.pow($v, 2));
   $h: 0;
@@ -25,5 +29,5 @@
     }
   }
 
-  @return ("l": $l, "c": $c, "h": $h);
+  @return ('l': $l, 'c': $c, 'h': $h);
 }

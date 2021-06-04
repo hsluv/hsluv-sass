@@ -4,13 +4,13 @@
 @use '../constants' as const;
 
 @function from-luv($luv) {
-  $l: map.get($luv, "l");
-  $u: map.get($luv, "u");
-  $v: map.get($luv, "v");
+  $l: map.get($luv, 'l');
+  $u: map.get($luv, 'u');
+  $v: map.get($luv, 'v');
 
   // black will create a divide-by-zero error
   @if $l == 0 {
-    @return ("x": 0, "y": 0, "z": 0);
+    @return ('x': 0, 'y': 0, 'z': 0);
   }
 
   $var-u: $u / (13 * $l) + const.$ref-u;
@@ -20,17 +20,17 @@
   $x: 0 - (9 * $y * $var-u) / (($var-u - 4) * $var-v - $var-u * $var-v);
   $z: (9 * $y - (15 * $var-v * $y) - ($var-v * $x)) / (3 * $var-v);
 
-  @return ("x": $x, "y": $y, "z": $z);
+  @return ('x': $x, 'y': $y, 'z': $z);
 }
 
 @function to-luv($xyz) {
-  $x: map.get($xyz, "x");
-  $y: map.get($xyz, "y");
-  $z: map.get($xyz, "z");
+  $x: map.get($xyz, 'x');
+  $y: map.get($xyz, 'y');
+  $z: map.get($xyz, 'z');
 
   // black will create a divide-by-zero error
   @if $y == 0 {
-    @return ("l": 0, "u": 0, "v": 0);
+    @return ('l': 0, 'u': 0, 'v': 0);
   }
 
   $l: y-to-l($y);
@@ -41,7 +41,7 @@
   $u: 13 * $l * ($var-u - const.$ref-u);
   $v: 13 * $l * ($var-v - const.$ref-v);
 
-  @return ("l": $l, "u": $u, "v": $v);
+  @return ('l': $l, 'u': $u, 'v': $v);
 }
 
 // http://en.wikipedia.org/wiki/CIELUV
