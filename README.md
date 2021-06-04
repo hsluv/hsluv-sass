@@ -1,5 +1,5 @@
 # HSLuv Sass
-[![Build Status](https://travis-ci.org/hsluv/hsluv-sass.svg?branch=master)](https://travis-ci.org/hsluv/hsluv-sass)
+[![Build Status](https://github.com/hsluv/hsluv-sass/actions/workflows/ci.yml/badge.svg)](https://github.com/hsluv/hsluv-sass/actions/workflows/ci.yml?query=branch%3Amaster)
 [![Dependency Status](https://david-dm.org/hsluv/hsluv-sass.svg)](https://david-dm.org/hsluv/hsluv-sass)
 [![devDependency Status](https://david-dm.org/hsluv/hsluv-sass/dev-status.svg)](https://david-dm.org/hsluv/hsluv-sass#info=devDependencies)
 [![Package Version](https://img.shields.io/npm/v/hsluv-sass.svg)](https://www.npmjs.com/package/hsluv-sass)
