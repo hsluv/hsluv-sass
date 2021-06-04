@@ -3,6 +3,10 @@
 @import "../src/hsluv";
 
 @include describe("hsluv function") {
+  @include it('should fail') {
+    @include assert-false(true);
+  }
+
   @include it('should return SASS color') {
     @include assert-equal(type-of(hsluv(0deg, 0, 0)), color);
   }
