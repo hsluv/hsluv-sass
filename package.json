@@ -7,11 +7,14 @@
     "test": "test"
   },
   "scripts": {
-    "test": "sass test/hsluv-tests.scss"
+    "test": "sass test/hsluv-tests.scss",
+    "lint": "prettier --list-different '**/*.scss'",
+    "fix": "prettier --write '**/*.scss'"
   },
   "author": "Cameron Little <cameron@camlittle.com>",
   "license": "MIT",
   "devDependencies": {
+    "prettier": "^2.3.0",
     "sass": "^1.32.11",
     "sass-true": "^6.0.1"
   },
@@ -31,5 +34,6 @@
   "files": [
     "src"
   ],
-  "homepage": "https://github.com/hsluv/hsluv-sass#readme"
+  "homepage": "https://github.com/hsluv/hsluv-sass#readme",
+  "dependencies": {}
 }
