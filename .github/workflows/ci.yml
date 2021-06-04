@@ -14,7 +14,7 @@ jobs:
           - ubuntu-latest
           - macos-latest
           - windows-latest
-        node: ['10', '12', '14']
+        node_version: ['10', '12', '14']
     name: Test - node ${{ matrix.node_version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
