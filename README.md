@@ -47,7 +47,7 @@ $ npx sass demo.scss
 ## Testing
 
 Tested with [True](https://www.oddbird.net/true/docs/).
-Continuous integration tests againsts latest and lts Node.js.
+Continuous integration tests againsts the last several version of node on multiple platforms.
 
 You can locally test after installing npm dependencies. Just run
 `npm test`.
