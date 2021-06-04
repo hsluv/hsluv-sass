@@ -8,28 +8,84 @@
 @use '../src/conversions/xyz' as xyz;
 @use '../src/conversions/rgb' as rgb;
 
-@import './data/snapshot';
+@import "./data/snapshot";
 
-@include describe('Snapshot testing') {
-  @include it('should match latest snapshot') {
+@include describe("Snapshot testing") {
+  @include it("should match latest snapshot") {
     @each $color, $sample in $values {
-      @include assert-equal(conv.hsluv-rgb(map.get($sample, 'hsluv')), map.get($sample, 'rgb'), $inspect: true);
-      @include assert-equal(conv.hpluv-rgb(map.get($sample, 'hpluv')), map.get($sample, 'rgb'), $inspect: true);
+      @include assert-equal(
+        conv.hsluv-rgb(map.get($sample, "hsluv")),
+        map.get($sample, "rgb"),
+        $inspect: true
+      );
+      @include assert-equal(
+        conv.hpluv-rgb(map.get($sample, "hpluv")),
+        map.get($sample, "rgb"),
+        $inspect: true
+      );
 
-      @include assert-equal(lch.from_hsluv(map.get($sample, 'hsluv')), map.get($sample, 'lch'), $inspect: true);
-      @include assert-equal(lch.from_hpluv(map.get($sample, 'hpluv')), map.get($sample, 'lch'), $inspect: true);
-      @include assert-equal(luv.from_lch(map.get($sample, 'lch')), map.get($sample, 'luv'), $inspect: true);
-      @include assert-equal(xyz.from_luv(map.get($sample, 'luv')), map.get($sample, 'xyz'), $inspect: true);
-      @include assert-equal(rgb.from_xyz(map.get($sample, 'xyz')), map.get($sample, 'rgb'), $inspect: true);
+      @include assert-equal(
+        lch.from_hsluv(map.get($sample, "hsluv")),
+        map.get($sample, "lch"),
+        $inspect: true
+      );
+      @include assert-equal(
+        lch.from_hpluv(map.get($sample, "hpluv")),
+        map.get($sample, "lch"),
+        $inspect: true
+      );
+      @include assert-equal(
+        luv.from_lch(map.get($sample, "lch")),
+        map.get($sample, "luv"),
+        $inspect: true
+      );
+      @include assert-equal(
+        xyz.from_luv(map.get($sample, "luv")),
+        map.get($sample, "xyz"),
+        $inspect: true
+      );
+      @include assert-equal(
+        rgb.from_xyz(map.get($sample, "xyz")),
+        map.get($sample, "rgb"),
+        $inspect: true
+      );
 
-      @include assert-equal(conv.rgb-hsluv(map.get($sample, 'rgb')), map.get($sample, 'hsluv'), $inspect: true);
-      @include assert-equal(conv.rgb-hpluv(map.get($sample, 'rgb')), map.get($sample, 'hpluv'), $inspect: true);
+      @include assert-equal(
+        conv.rgb-hsluv(map.get($sample, "rgb")),
+        map.get($sample, "hsluv"),
+        $inspect: true
+      );
+      @include assert-equal(
+        conv.rgb-hpluv(map.get($sample, "rgb")),
+        map.get($sample, "hpluv"),
+        $inspect: true
+      );
 
-      @include assert-equal(rgb.to-xyz(map.get($sample, 'rgb')), map.get($sample, 'xyz'), $inspect: true);
-      @include assert-equal(xyz.to-luv(map.get($sample, 'xyz')), map.get($sample, 'luv'), $inspect: true);
-      @include assert-equal(luv.to-lch(map.get($sample, 'luv')), map.get($sample, 'lch'), $inspect: true);
-      @include assert-equal(lch.to-hsluv(map.get($sample, 'lch')), map.get($sample, 'hsluv'), $inspect: true);
-      @include assert-equal(lch.to-hpluv(map.get($sample, 'lch')), map.get($sample, 'hpluv'), $inspect: true);
+      @include assert-equal(
+        rgb.to-xyz(map.get($sample, "rgb")),
+        map.get($sample, "xyz"),
+        $inspect: true
+      );
+      @include assert-equal(
+        xyz.to-luv(map.get($sample, "xyz")),
+        map.get($sample, "luv"),
+        $inspect: true
+      );
+      @include assert-equal(
+        luv.to-lch(map.get($sample, "luv")),
+        map.get($sample, "lch"),
+        $inspect: true
+      );
+      @include assert-equal(
+        lch.to-hsluv(map.get($sample, "lch")),
+        map.get($sample, "hsluv"),
+        $inspect: true
+      );
+      @include assert-equal(
+        lch.to-hpluv(map.get($sample, "lch")),
+        map.get($sample, "hpluv"),
+        $inspect: true
+      );
     }
-  };
+  }
 }

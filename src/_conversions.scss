@@ -19,7 +19,11 @@
       $lightness: $lightness / 1%;
     }
 
-    $hsl: ('h': $hue, 's': $saturation, 'l': $lightness);
+    $hsl: (
+      "h": $hue,
+      "s": $saturation,
+      "l": $lightness,
+    );
   }
 
   @return $hsl;
