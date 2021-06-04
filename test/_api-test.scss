@@ -7,6 +7,11 @@
     @include assert-equal(type-of(hsluv(0deg, 0, 0)), color);
   }
 
+  @include it("should support SASS color functions") {
+    @include assert-equal(hsluv(60deg, 60, 80), #e7c17d);
+    @include assert-equal(darken(hsluv(60deg, 60, 80), 10%), #dfac52);
+  }
+
   @include it("should accept hue as both deg and unitless value") {
     @include assert-equal(hsluv(212deg, 88, 54), #2f8d9d);
     @include assert-equal(hsluv(212, 88, 54), #2f8d9d);
