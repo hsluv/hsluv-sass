@@ -21,50 +21,6 @@ include
 npm install hsluv-sass
 ```
 
-### API
-
-```scss
-hsluv($hue, $saturation, $lightness) //=> color
-```
-
-Creates a sass color object in HSLuv color space. 
-
-- `$hue` — The hue of the color. A number between 0 and 360 degrees, inclusive.
-- `$saturation` — The saturation of the color. Must be a number between 0% and 100%, inclusive.
-- `$lightness` — The lightness of the color. Must be a number between 0% and 100%, inclusive.
-
-```scss
-hpluv($hue, $saturation, $lightness) //=> color
-```
-
-Creates a sass color object in HPLuv color space. 
-
-- `$hue` — The hue of the color. A number between 0 and 360 degrees, inclusive.
-- `$saturation` — The saturation of the color. Must be a number between 0% and 100%, inclusive.
-- `$lightness` — The lightness of the color. Must be a number between 0% and 100%, inclusive.
-
-```scss
-hsluva($hue, $saturation, $lightness, $alpha: 1) //=> color
-```
-
-Creates a sass color object in HSLuv color space with transparency.
-
-- `$hue` — The hue of the color. A number between 0 and 360 degrees, inclusive.
-- `$saturation` — The saturation of the color. Must be a number between 0% and 100%, inclusive.
-- `$lightness` — The lightness of the color. Must be a number between 0% and 100%, inclusive.
-- `$alpha` - The opacity of the color. Must be a number between 0 and 1, inclusive.
-
-```scss
-hpluva($hue, $saturation, $lightness, $alpha: 1) //=> color
-```
-
-Creates a sass color object in HPLuv color space with transparency. 
-
-- `$hue` — The hue of the color. A number between 0 and 360 degrees, inclusive.
-- `$saturation` — The saturation of the color. Must be a number between 0% and 100%, inclusive.
-- `$lightness` — The lightness of the color. Must be a number between 0% and 100%, inclusive.
-- `$alpha` - The opacity of the color. Must be a number between 0 and 1, inclusive.
-
 ### Example
 
 Create `demo.csss`:
@@ -91,11 +47,59 @@ With [`@import`](https://sass-lang.com/documentation/at-rules/import):
 }
 ```
 
+Compile:
+
 ```bash
 $ npx sass demo.scss 
+```
+
+Emitted css:
+
+```css
 .example {
   color: #a84c27;
   background-color: #738fc0;
+}
+```
+
+### API
+
+```scss
+hsluv($hue, $saturation, $lightness) //=> color
+```
+
+Creates a sass color object in HSLuv color space. 
+
+```scss
+hpluv($hue, $saturation, $lightness) //=> color
+```
+
+Creates a sass color object in HPLuv color space. 
+
+```scss
+hsluva($hue, $saturation, $lightness, $alpha: 1) //=> color
+```
+
+Creates a sass color object in HSLuv color space with transparency.
+
+```scss
+hpluva($hue, $saturation, $lightness, $alpha: 1) //=> color
+```
+
+Creates a sass color object in HPLuv color space with transparency. 
+
+#### Parameters
+
+- `$hue` — The hue of the color. A number between 0 and 360 degrees, inclusive.
+- `$saturation` — The saturation of the color. Must be a number between 0% and 100%, inclusive.
+- `$lightness` — The lightness of the color. Must be a number between 0% and 100%, inclusive.
+- `$alpha` - The opacity of the color. Must be a number between 0 and 1, inclusive.
+
+All function support passing an HSL map directly and omitting the `$saturation` and `$lightness` parameters.
+
+```scss
+.example {
+  color: hsluv((h: 23.2, s: 83.4, l: 43.7))
 }
 ```
 
