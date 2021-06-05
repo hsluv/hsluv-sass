@@ -28,7 +28,7 @@ npm install hsluv-sass
 Create `demo.csss`:
 
 ```scss
-@import "./node_modules/hsluv-sass/src/hsluv";
+@import "./node_modules/hsluv-sass";
 
 .example {
   color: hsluv(23.2, 83.4%, 43.7%);
