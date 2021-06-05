@@ -20,10 +20,14 @@
     }
 
     $hsl: (
-      "h": $hue,
-      "s": $saturation,
-      "l": $lightness,
+      h: $hue,
+      s: $saturation,
+      l: $lightness,
     );
+  } @else if (type-of($value: $hsl) != map) {
+    @error "hsluv function with a single parameter must be called with a map of the form (h: $hue, s: $saturation, l: $lightness)";
+  } @else if not (map.get($hsl, h) and map.get($hsl, s) and map.get($hsl, l)) {
+    @error "hsluv function with a single parameter must be called with a map of the form (h: $hue, s: $saturation, l: $lightness)";
   }
 
   @return $hsl;
