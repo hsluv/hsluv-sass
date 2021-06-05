@@ -95,11 +95,12 @@ Creates a sass color object in HPLuv color space with transparency.
 - `$lightness` — The lightness of the color. Must be a number between 0% and 100%, inclusive.
 - `$alpha` - The opacity of the color. Must be a number between 0 and 1, inclusive.
 
-All function support passing an HSL map directly and omitting the `$saturation` and `$lightness` parameters.
+All function support passing an HSL map directly and omitting the `$saturation` and `$lightness` parameters. If unitless, the `h` value must be in radians.
 
 ```scss
 .example {
-  color: hsluv((h: 23.2, s: 83.4, l: 43.7))
+  color: hsluv((h: 0.4049164, s: 83.4, l: 43.7));
+  background-color: hpluv((h: 4.3703044, s: 100, l: 59.1));
 }
 ```
 
