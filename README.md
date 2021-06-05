@@ -28,7 +28,7 @@ Create `demo.csss`:
 With [`@use`](https://sass-lang.com/documentation/at-rules/use):
 
 ```scss
-@use "./node_modules/hsluv-sass/src/hsluv";
+@use "./node_modules/hsluv-sass" as hsluv;
 
 .example {
   color: hsluv.hsluv(23.2, 83.4%, 43.7%);
@@ -39,7 +39,7 @@ With [`@use`](https://sass-lang.com/documentation/at-rules/use):
 With [`@import`](https://sass-lang.com/documentation/at-rules/import):
 
 ```scss
-@import "./node_modules/hsluv-sass/src/hsluv";
+@import "./node_modules/hsluv-sass";
 
 .example {
   color: hsluv(23.2, 83.4%, 43.7%);
