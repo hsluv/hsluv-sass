@@ -15,17 +15,72 @@ include
 
 ## Usage
 
-Some [docs](https://github.com/hsluv/hsluv-sass/wiki) for you to read.
-
 ### Installation
 
 ```
 npm install hsluv-sass
 ```
 
+### API
+
+```scss
+hsluv($hue, $saturation, $lightness) //=> color
+```
+
+Creates a sass color object in HSLuv color space. 
+
+- `$hue` — The hue of the color. A number between 0 and 360 degrees, inclusive.
+- `$saturation` — The saturation of the color. Must be a number between 0% and 100%, inclusive.
+- `$lightness` — The lightness of the color. Must be a number between 0% and 100%, inclusive.
+
+```scss
+hpluv($hue, $saturation, $lightness) //=> color
+```
+
+Creates a sass color object in HPLuv color space. 
+
+- `$hue` — The hue of the color. A number between 0 and 360 degrees, inclusive.
+- `$saturation` — The saturation of the color. Must be a number between 0% and 100%, inclusive.
+- `$lightness` — The lightness of the color. Must be a number between 0% and 100%, inclusive.
+
+```scss
+hsluva($hue, $saturation, $lightness, $alpha: 1) //=> color
+```
+
+Creates a sass color object in HSLuv color space with transparency.
+
+- `$hue` — The hue of the color. A number between 0 and 360 degrees, inclusive.
+- `$saturation` — The saturation of the color. Must be a number between 0% and 100%, inclusive.
+- `$lightness` — The lightness of the color. Must be a number between 0% and 100%, inclusive.
+- `$alpha` - The opacity of the color. Must be a number between 0 and 1, inclusive.
+
+```scss
+hpluva($hue, $saturation, $lightness, $alpha: 1) //=> color
+```
+
+Creates a sass color object in HPLuv color space with transparency. 
+
+- `$hue` — The hue of the color. A number between 0 and 360 degrees, inclusive.
+- `$saturation` — The saturation of the color. Must be a number between 0% and 100%, inclusive.
+- `$lightness` — The lightness of the color. Must be a number between 0% and 100%, inclusive.
+- `$alpha` - The opacity of the color. Must be a number between 0 and 1, inclusive.
+
 ### Example
 
 Create `demo.csss`:
+
+With [`@use`](https://sass-lang.com/documentation/at-rules/use):
+
+```scss
+@use "./node_modules/hsluv-sass/src/hsluv";
+
+.example {
+  color: hsluv.hsluv(23.2, 83.4%, 43.7%);
+  background-color: hsluv.hpluv(250.4, 100%, 59.1%);
+}
+```
+
+With [`@import`](https://sass-lang.com/documentation/at-rules/import):
 
 ```scss
 @import "./node_modules/hsluv-sass/src/hsluv";
