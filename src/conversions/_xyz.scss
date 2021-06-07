@@ -13,12 +13,12 @@
     @return ("x": 0, "y": 0, "z": 0);
   }
 
-  $var-u: $u / (13 * $l) + const.$ref-u;
-  $var-v: $v / (13 * $l) + const.$ref-v;
+  $var-u: math.div($u, 13 * $l) + const.$ref-u;
+  $var-v: math.div($v, 13 * $l) + const.$ref-v;
 
   $y: l-to-y($l);
-  $x: 0 - (9 * $y * $var-u) / (($var-u - 4) * $var-v - $var-u * $var-v);
-  $z: (9 * $y - (15 * $var-v * $y) - ($var-v * $x)) / (3 * $var-v);
+  $x: 0 - math.div(9 * $y * $var-u, ($var-u - 4) * $var-v - $var-u * $var-v);
+  $z: math.div(9 * $y - (15 * $var-v * $y) - ($var-v * $x), 3 * $var-v);
 
   @return ("x": $x, "y": $y, "z": $z);
 }
@@ -35,8 +35,8 @@
 
   $l: y-to-l($y);
 
-  $var-u: (4 * $x) / ($x + (15 * $y) + (3 * $z));
-  $var-v: (9 * $y) / ($x + (15 * $y) + (3 * $z));
+  $var-u: math.div(4 * $x, $x + (15 * $y) + (3 * $z));
+  $var-v: math.div(9 * $y, $x + (15 * $y) + (3 * $z));
 
   $u: 13 * $l * ($var-u - const.$ref-u);
   $v: 13 * $l * ($var-v - const.$ref-v);
@@ -54,7 +54,7 @@
   @if $y <= const.$epsilon {
     @return $y * const.$kappa;
   } @else {
-    @return 116 * math.pow($y, 1/3) - 16;
+    @return 116 * math.pow($y, math.div(1, 3)) - 16;
   }
 }
 
@@ -62,8 +62,8 @@
 // @return {number}
 @function l-to-y($l) {
   @if $l <= 8 {
-    @return $l / const.$kappa;
+    @return math.div($l, const.$kappa);
   } @else {
-    @return math.pow(($l + 16) / 116, 3);
+    @return math.pow(math.div($l + 16, 116), 3);
   }
 }

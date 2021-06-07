@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @use 'sass:map';
 
 @use './conversions/lch' as lch;
@@ -13,10 +15,10 @@
       $hue: $hue * 1deg;
     }
     @if unit($saturation) == "%" {
-      $saturation: $saturation / 1%;
+      $saturation: math.div($saturation, 1%);
     }
     @if unit($lightness) == "%" {
-      $lightness: $lightness / 1%;
+      $lightness: math.div($lightness, 1%);
     }
 
     $hsl: (

@@ -12,7 +12,7 @@
   // white and black: disambiguate chroma
   @if not($l > 99.9999999 or $l < 0.00000001) {
     $max: max-chroma-for-l-h($l, $h);
-    $c: $max / 100 * $s;
+    $c: math.div($max, 100) * $s;
   }
 
   @return ("l": $l, "c": $c, "h": $h);
@@ -27,7 +27,7 @@
   // white and black: disambiguate chroma
   @if not($l > 99.9999999 or $l < 0.00000001) {
     $max: max-safe-chroma-for-l($l);
-    $c: $max / 100 * $s;
+    $c: math.div($max, 100) * $s;
   }
   @return ("l": $l, "c": $c, "h": $h);
 }
@@ -41,7 +41,7 @@
   // white and black: disambiguate saturation
   @if not($l > 99.9999999 or $l < 0.00000001) {
     $max: max-chroma-for-l-h($l, $h);
-    $s: $c / $max * 100;
+    $s: math.div($c, $max) * 100;
   }
   @return ("h": $h, "s": $s, "l": $l);
 }
@@ -55,7 +55,7 @@
   // white and black: disambiguate saturation
   @if not($l > 99.9999999 or $l < 0.00000001) {
     $max: max-safe-chroma-for-l($l);
-    $s: $c / $max * 100;
+    $s: math.div($c, $max) * 100;
   }
   @return ("h": $h, "s": $s, "l": $l);
 }
@@ -90,7 +90,7 @@
     $m1: nth($point, 1);
     $b1: nth($point, 2);
     // x where line intersects with perpendicular running though (0, 0)
-    $x: intersect-line-line(($m1, $b1), (-1 / $m1, 0));
+    $x: intersect-line-line(($m1, $b1), (math.div(-1, $m1), 0));
     $lengths: append($lengths, distance-from-pole(($x, $b1 + $x * $m1)));
   }
 
@@ -103,8 +103,8 @@
 // @param {number} $l
 // @return {number[][2]}
 @function get-bounds($l) {
-  $sub1: math.pow($l + 16, 3) / 1560896;
-  $sub2: if($sub1 > const.$epsilon, $sub1, $l / const.$kappa);
+  $sub1: math.div(math.pow($l + 16, 3), 1560896);
+  $sub2: if($sub1 > const.$epsilon, $sub1, math.div($l, const.$kappa));
   $ret: ();
   @each $channel in (r, g, b) {
     $m_: map.get(const.$m, $channel);
@@ -121,7 +121,7 @@
         $l;
       $bottom: (632260 * $m3 - 126452 * $m2) * $sub2 + 126452 * $t;
 
-      $ret: append($ret, ($top1 / $bottom, $top2 / $bottom));
+      $ret: append($ret, (math.div($top1, $bottom), math.div($top2, $bottom)));
     }
   }
 
@@ -150,7 +150,7 @@
 
   $m1: nth($line, 1);
   $b1: nth($line, 2);
-  $len: $b1 / (math.sin($theta) - $m1 * math.cos($theta));
+  $len: math.div($b1, math.sin($theta) - $m1 * math.cos($theta));
 
   @return if($len < 0, null, $len);
 }
@@ -165,5 +165,5 @@
 // @param {number[2]} $line2
 // @return {number}
 @function intersect-line-line($line1, $line2) {
-  @return (nth($line1, 2) - nth($line2, 2)) / (nth($line2, 1) - nth($line1, 1));
+  @return math.div(nth($line1, 2) - nth($line2, 2), nth($line2, 1) - nth($line1, 1));
 }

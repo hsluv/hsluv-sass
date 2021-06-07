@@ -18,9 +18,9 @@
 }
 
 @function to-xyz($rgb) {
-  $r: map.get($rgb, "r") / 255;
-  $g: map.get($rgb, "g") / 255;
-  $b: map.get($rgb, "b") / 255;
+  $r: math.div(map.get($rgb, "r"), 255);
+  $g: math.div(map.get($rgb, "g"), 255);
+  $b: math.div(map.get($rgb, "b"), 255);
 
   $tuple: (to-linear($r), to-linear($g), to-linear($b));
 
@@ -39,7 +39,7 @@
   @return if(
     $c <= 0.0031308,
     12.92 * $c,
-    1.055 * math.pow($c, 1 / 2.4) - 0.055
+    1.055 * math.pow($c, math.div(1, 2.4)) - 0.055
   );
 }
 
@@ -48,9 +48,9 @@
 @function to-linear($c) {
   $a: 0.055;
   @if $c > 0.04045 {
-    @return math.pow(($c + $a) / (1 + $a), 2.4);
+    @return math.pow(math.div($c + $a, 1 + $a), 2.4);
   } @else {
-    @return $c / 12.92;
+    @return math.div($c, 12.92);
   }
 }
 
