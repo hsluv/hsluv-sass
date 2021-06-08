@@ -15,7 +15,7 @@
   "license": "MIT",
   "devDependencies": {
     "prettier": "^2.3.0",
-    "sass": "^1.32.11",
+    "sass": "^1.34.1",
     "sass-true": "^6.0.1"
   },
   "repository": {

@@ -165,5 +165,8 @@
 // @param {number[2]} $line2
 // @return {number}
 @function intersect-line-line($line1, $line2) {
-  @return math.div(nth($line1, 2) - nth($line2, 2), nth($line2, 1) - nth($line1, 1));
+  @return math.div(
+    nth($line1, 2) - nth($line2, 2),
+    nth($line2, 1) - nth($line1, 1)
+  );
 }
