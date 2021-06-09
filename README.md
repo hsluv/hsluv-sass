@@ -15,8 +15,6 @@ include
 
 ## Usage
 
-Some [docs](https://github.com/hsluv/hsluv-sass/wiki) for you to read.
-
 ### Installation
 
 ```
@@ -27,8 +25,21 @@ npm install hsluv-sass
 
 Create `demo.csss`:
 
+With [`@use`](https://sass-lang.com/documentation/at-rules/use):
+
 ```scss
-@import "./node_modules/hsluv-sass/src/hsluv";
+@use "./node_modules/hsluv-sass" as hsluv;
+
+.example {
+  color: hsluv.hsluv(23.2, 83.4%, 43.7%);
+  background-color: hsluv.hpluv(250.4, 100%, 59.1%);
+}
+```
+
+With [`@import`](https://sass-lang.com/documentation/at-rules/import):
+
+```scss
+@import "./node_modules/hsluv-sass";
 
 .example {
   color: hsluv(23.2, 83.4%, 43.7%);
@@ -36,11 +47,60 @@ Create `demo.csss`:
 }
 ```
 
+Compile:
+
 ```bash
 $ npx sass demo.scss 
+```
+
+Emitted css:
+
+```css
 .example {
   color: #a84c27;
   background-color: #738fc0;
+}
+```
+
+### API
+
+```scss
+hsluv($hue, $saturation, $lightness) //=> color
+```
+
+Creates a sass color object in HSLuv color space. 
+
+```scss
+hpluv($hue, $saturation, $lightness) //=> color
+```
+
+Creates a sass color object in HPLuv color space. 
+
+```scss
+hsluva($hue, $saturation, $lightness, $alpha: 1) //=> color
+```
+
+Creates a sass color object in HSLuv color space with transparency.
+
+```scss
+hpluva($hue, $saturation, $lightness, $alpha: 1) //=> color
+```
+
+Creates a sass color object in HPLuv color space with transparency. 
+
+#### Parameters
+
+- `$hue` — The hue of the color. A number between 0 and 360 degrees, inclusive.
+- `$saturation` — The saturation of the color. Must be a number between 0% and 100%, inclusive.
+- `$lightness` — The lightness of the color. Must be a number between 0% and 100%, inclusive.
+- `$alpha` - The opacity of the color. Must be a number between 0 and 1, inclusive.
+
+All function support passing an HSL map directly and omitting the `$saturation` and `$lightness` parameters. If unitless, the `h` value must be in radians.
+
+```scss
+.example {
+  color: hsluv((h: 0.4049164, s: 83.4, l: 43.7));
+  background-color: hpluv((h: 4.3703044, s: 100, l: 59.1));
 }
 ```
 
