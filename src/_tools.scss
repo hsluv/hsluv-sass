@@ -1,0 +1,93 @@
+// Create an internal hsluv/hpluv color representation
+// which can be manipulated by hsluv color functions
+@function color($hue, $saturation: null, $lightness: null) {
+  $hsl: $hue;
+
+  @if ($saturation and $lightness) {
+    @if unitless($hue) {
+      $hue: $hue * 1deg;
+    }
+    @if unit($saturation) == "%" {
+      $saturation: $saturation / 1%;
+    }
+    @if unit($lightness) == "%" {
+      $lightness: $lightness / 1%;
+    }
+
+    $hsl: ('h': $hue, 's': $saturation, 'l': $lightness);
+  }
+
+  @return $hsl;
+}
+
+// Convert SASS-color to internal hsluv color representation
+// which can be manipulated by hsluv color functions
+@function hsluv-from($color) {
+  @return conv.rgb-hsluv((
+    'r': red($color),
+    'g': green($color),
+    'b': blue($color)
+  ));
+}
+
+// Convert SASS-color to internal hsluv color representation
+// which can be manipulated by hsluv color functions
+@function hpluv-from($color) {
+  @return conv.rgb-hpluv((
+    'r': red($color),
+    'g': green($color),
+    'b': blue($color)
+  ));
+}
+
+@function rotate($hsluv, $angle) {}
+
+@function get-hue($hsluv)        { @return map-get($hsluv, 'h'); }
+@function get-saturation($hsluv) { @return map-get($hsluv, 's'); }
+@function get-lightness($hsluv)  { @return map-get($hsluv, 'l'); }
+
+@function set-hue($hsluv, $hue) {}
+@function set-saturation($hsluv, $saturation) {}
+@function set-lightness($hsluv, $lightness) {}
+
+@function set($hsluv, $hue: null, $saturation: null, $lightness: null) {}
+
+@function saturate($hsluv, $amount) {}
+@function desaturate($hsluv, $amount) {}
+
+@function darken($hsluv, $amount) {}
+@function lighten($hsluv, $amount) {}
+
+@function contrast-darken($hsluv, $ratio: 'AA') {
+  @return contrast($hsluv, 'darken', $ratio);
+}
+
+@function contrast-lighten($hsluv, $ratio: 'AA') {
+  @return contrast($hsluv, 'lighten', $ratio);
+}
+
+@function contrast($hsluv, $op: 'darken', $ratio: 'AA') {
+  $h: map-get($hsluv, 'h');
+  $s: map-get($hsluv, 's');
+  $l: map-get($hsluv, 'l');
+
+  @if $ratio == 'AA' {
+    $ratio: 4.53 / 1;
+  } @else if $ratio == 'AAA' {
+    $ratio: 7.03 / 1;
+  }
+
+  $y: xyz.l-to-y($l);
+
+  @if $op == 'lighten' {
+    $newY: (20 * $ratio * $y + $ratio - 1) / 20;
+  } @else {
+    $newY: (20 * $y - $ratio + 1) / (20 * $ratio);
+  } // TODO - auto
+
+  @return (
+    'h': $h,
+    's': $s,
+    'l': xyz.y-to-l($newY)
+  );
+}
