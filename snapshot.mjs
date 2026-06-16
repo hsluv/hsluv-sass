@@ -6,130 +6,126 @@ import * as sass from "sass";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const samples = [
-  "#1100ff",
-  "#0066aa",
-  "#cc33cc",
-  "#0022dd",
-  "#0066ee",
-  "#bbbb11",
-  "#5566dd",
-  "#55eeaa",
-  "#ee7700",
-  "#33bbaa",
-  "#44aa77",
-  "#dd6699",
-  "#99ee22",
-  "#ff22aa",
-  "#99aa11",
-  "#dd1122",
-];
+const colors = JSON.parse(
+  fs.readFileSync(
+    path.join(__dirname, "test", "data", "snapshot-rev4.json"),
+    "utf8"
+  )
+);
 
-function hexToRgb(hex) {
-  return {
-    r: parseInt(hex.slice(1, 3), 16),
-    g: parseInt(hex.slice(3, 5), 16),
-    b: parseInt(hex.slice(5, 7), 16),
-  };
-}
+const hexes = Object.keys(colors);
 
-function sassInspect($map) {
-  const entries = [];
-  if ($map.contents) {
-    $map.contents.forEach((v, k) => {
-      const key = k instanceof sass.SassString ? k.text : k.toString();
-      entries.push(`'${key}': ${v}`);
-    });
-  }
-  return new sass.SassString("(" + entries.join(", ") + ")");
-}
-
+const BATCH_SIZE = 200;
 const debugOutput = {};
 
-const result = sass.compileString(
-  `
+for (let batchStart = 0; batchStart < hexes.length; batchStart += BATCH_SIZE) {
+  const batch = hexes.slice(batchStart, batchStart + BATCH_SIZE);
+
+  const sassSrc = `
 @use 'conversions' as conv;
 @use 'conversions/lch' as lch;
 @use 'conversions/luv' as luv;
 @use 'conversions/xyz' as xyz;
 @use 'conversions/rgb' as rgb;
 
-@function map-inspect($map) {
-  @return map-inspect-custom($map);
-}
-
-${samples
-  .map((color) => {
-    const rgb = hexToRgb(color);
-    const hex = color.slice(1);
+${batch
+  .map((hex) => {
+    const [r, g, b] = colors[hex].rgb;
+    const suffix = hex.slice(1);
+    const rr = Math.round(r * 255);
+    const rg = Math.round(g * 255);
+    const rb = Math.round(b * 255);
     return `
-      @debug "${color}-hsluv " + map-inspect(conv.rgb-hsluv(('r': ${rgb.r}, 'g': ${rgb.g}, 'b': ${rgb.b})));
-      @debug "${color}-hpluv " + map-inspect(conv.rgb-hpluv(('r': ${rgb.r}, 'g': ${rgb.g}, 'b': ${rgb.b})));
+      $hsluv${suffix}: conv.rgb-hsluv(('r': ${rr}, 'g': ${rg}, 'b': ${rb}));
+      $hpluv${suffix}: conv.rgb-hpluv(('r': ${rr}, 'g': ${rg}, 'b': ${rb}));
+      $lch${suffix}: lch.from-hsluv($hsluv${suffix});
+      $lch-from-hpluv${suffix}: lch.from-hpluv($hpluv${suffix});
+      $luv${suffix}: luv.from-lch($lch${suffix});
+      $xyz${suffix}: xyz.from-luv($luv${suffix});
+      $rgb${suffix}: rgb.from-xyz($xyz${suffix});
+      $xyz-back${suffix}: rgb.to-xyz(('r': ${rr}, 'g': ${rg}, 'b': ${rb}));
+      $luv-back${suffix}: xyz.to-luv($xyz-back${suffix});
+      $lch-back${suffix}: luv.to-lch($luv-back${suffix});
+      $hsluv-back${suffix}: lch.to-hsluv($lch-back${suffix});
+      $hpluv-back${suffix}: lch.to-hpluv($lch-back${suffix});
 
-      $hsluv${hex}: conv.rgb-hsluv(('r': ${rgb.r}, 'g': ${rgb.g}, 'b': ${rgb.b}));
-      $hpluv${hex}: conv.rgb-hpluv(('r': ${rgb.r}, 'g': ${rgb.g}, 'b': ${rgb.b}));
-      
-      $lch-from-hsluv${hex}: lch.from-hsluv($hsluv${hex});
-      $lch-from-hpluv${hex}: lch.from-hpluv($hpluv${hex});
-      $luv${hex}: luv.from-lch($lch-from-hsluv${hex});
-      $xyz${hex}: xyz.from-luv($luv${hex});
-      $rgb-from-xyz${hex}: rgb.from-xyz($xyz${hex});
-      
-      $xyz-back${hex}: rgb.to-xyz(('r': ${rgb.r}, 'g': ${rgb.g}, 'b': ${rgb.b}));
-      $luv-back${hex}: xyz.to-luv($xyz-back${hex});
-      $lch-back${hex}: luv.to-lch($luv-back${hex});
-      $hsluv-back${hex}: lch.to-hsluv($lch-back${hex});
-      $hpluv-back${hex}: lch.to-hpluv($lch-back${hex});
-
-      @debug "${color}-lch " + map-inspect($lch-from-hsluv${hex});
-      @debug "${color}-luv " + map-inspect($luv${hex});
-      @debug "${color}-xyz " + map-inspect($xyz${hex});
-      @debug "${color}-rgb " + map-inspect($rgb-from-xyz${hex});
-      @debug "${color}-xyz-back " + map-inspect($xyz-back${hex});
-      @debug "${color}-luv-back " + map-inspect($luv-back${hex});
-      @debug "${color}-lch-back " + map-inspect($lch-back${hex});
-      @debug "${color}-hsluv-back " + map-inspect($hsluv-back${hex});
-      @debug "${color}-hpluv-back " + map-inspect($hpluv-back${hex});
-      @debug "${color}-lch-from-hpluv " + map-inspect($lch-from-hpluv${hex});
+      @if not _snapshot-output("hsluv${suffix}", $hsluv${suffix}) {}
+      @if not _snapshot-output("hpluv${suffix}", $hpluv${suffix}) {}
+      @if not _snapshot-output("lch${suffix}", $lch${suffix}) {}
+      @if not _snapshot-output("lch-from-hpluv${suffix}", $lch-from-hpluv${suffix}) {}
+      @if not _snapshot-output("luv${suffix}", $luv${suffix}) {}
+      @if not _snapshot-output("xyz${suffix}", $xyz${suffix}) {}
+      @if not _snapshot-output("rgb${suffix}", $rgb${suffix}) {}
+      @if not _snapshot-output("xyz-back${suffix}", $xyz-back${suffix}) {}
+      @if not _snapshot-output("luv-back${suffix}", $luv-back${suffix}) {}
+      @if not _snapshot-output("lch-back${suffix}", $lch-back${suffix}) {}
+      @if not _snapshot-output("hsluv-back${suffix}", $hsluv-back${suffix}) {}
+      @if not _snapshot-output("hpluv-back${suffix}", $hpluv-back${suffix}) {}
     `;
   })
   .join("\n")}
-`,
-  {
+`;
+
+  const result = sass.compileString(sassSrc, {
     loadPaths: [path.join(__dirname, "src")],
     functions: {
-      "map-inspect-custom($map)": (args) => sassInspect(args[0]),
-    },
-    logger: {
-      debug: (msg) => {
-        const spaceIdx = msg.indexOf(" ");
-        const key = msg.slice(0, spaceIdx);
-        const val = msg.slice(spaceIdx + 1).trim();
-        debugOutput[key] = val;
+      "_snapshot-output($key, $value)": (args) => {
+        const key = args[0].assertString().text;
+        debugOutput[key] = sassValueToScss(args[1]);
+        return sass.sassNull;
       },
-      warn: () => {},
     },
+  });
+
+  const progress = Math.min(batchStart + BATCH_SIZE, hexes.length);
+  console.error(`Processed ${progress}/${hexes.length} colors...`);
+}
+
+function sassValueToScss(value) {
+  if (value instanceof sass.SassMap) {
+    const entries = [];
+    value.contents.forEach((v, k) => {
+      const key = k instanceof sass.SassString ? k.text : k.toString();
+      entries.push(`"${key}": ${sassValueToScss(v)}`);
+    });
+    return "(" + entries.join(", ") + ")";
   }
-);
+  if (value instanceof sass.SassNumber) {
+    let str = String(value.value);
+    if ([...value.numeratorUnits].includes("deg")) str += "deg";
+    return str;
+  }
+  if (value instanceof sass.SassColor) {
+    const r = Math.round(value.red * 255);
+    const g = Math.round(value.green * 255);
+    const b = Math.round(value.blue * 255);
+    return `("r": ${r}, "g": ${g}, "b": ${b})`;
+  }
+  if (value instanceof sass.SassString) {
+    return `"${value.text}"`;
+  }
+  return String(value);
+}
 
 const lines = ["$values: ("];
 
-samples.forEach((color, i) => {
-  const last = i === samples.length - 1;
+hexes.forEach((hex, i) => {
+  const last = i === hexes.length - 1;
+  const s = hex.slice(1);
 
-  lines.push(`  '${color}': (`);
-  lines.push(`    'hsluv': ${debugOutput[color + "-hsluv"]},`);
-  lines.push(`    'hpluv': ${debugOutput[color + "-hpluv"]},`);
-  lines.push(`    'lch': ${debugOutput[color + "-lch"]},`);
-  lines.push(`    'luv': ${debugOutput[color + "-luv"]},`);
-  lines.push(`    'xyz': ${debugOutput[color + "-xyz"]},`);
-  lines.push(`    'rgb': ${debugOutput[color + "-rgb"]},`);
-  lines.push(`    'xyz-back': ${debugOutput[color + "-xyz-back"]},`);
-  lines.push(`    'luv-back': ${debugOutput[color + "-luv-back"]},`);
-  lines.push(`    'lch-back': ${debugOutput[color + "-lch-back"]},`);
-  lines.push(`    'hsluv-back': ${debugOutput[color + "-hsluv-back"]},`);
-  lines.push(`    'hpluv-back': ${debugOutput[color + "-hpluv-back"]},`);
-  lines.push(`    'lch-from-hpluv': ${debugOutput[color + "-lch-from-hpluv"]}`);
+  lines.push(`  "${hex}": (`);
+  lines.push(`    "hsluv": ${debugOutput["hsluv" + s]},`);
+  lines.push(`    "hpluv": ${debugOutput["hpluv" + s]},`);
+  lines.push(`    "lch": ${debugOutput["lch" + s]},`);
+  lines.push(`    "lch-from-hpluv": ${debugOutput["lch-from-hpluv" + s]},`);
+  lines.push(`    "luv": ${debugOutput["luv" + s]},`);
+  lines.push(`    "xyz": ${debugOutput["xyz" + s]},`);
+  lines.push(`    "rgb": ${debugOutput["rgb" + s]},`);
+  lines.push(`    "xyz-back": ${debugOutput["xyz-back" + s]},`);
+  lines.push(`    "luv-back": ${debugOutput["luv-back" + s]},`);
+  lines.push(`    "lch-back": ${debugOutput["lch-back" + s]},`);
+  lines.push(`    "hsluv-back": ${debugOutput["hsluv-back" + s]},`);
+  lines.push(`    "hpluv-back": ${debugOutput["hpluv-back" + s]}`);
   lines.push(`  )${last ? "" : ","}`);
 });
 
@@ -138,5 +134,5 @@ lines.push(");\n");
 const outputPath = path.join(__dirname, "test", "data", "_snapshot.scss");
 fs.writeFileSync(outputPath, lines.join("\n"), "utf8");
 console.log(
-  `Snapshot written to ${outputPath} (${Object.keys(debugOutput).length} values)`
+  `Snapshot written to ${outputPath} (${hexes.length} colors)`
 );
