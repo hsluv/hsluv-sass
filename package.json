@@ -1,6 +1,6 @@
 {
   "name": "hsluv-sass",
-  "version": "3.0.0",
+  "version": "3.0.0-beta.1",
   "description": "HSLuv Sass - Human friendly HSL",
   "main": "src/_hsluv.scss",
   "sass": "src/_hsluv.scss",
