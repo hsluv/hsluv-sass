@@ -1,15 +1,19 @@
-var sass = require("sass");
-var path = require("path");
-var assert = require("node:assert");
+import * as sass from "sass";
+import path from "node:path";
+import assert from "node:assert";
+import { fileURLToPath } from "node:url";
 
-var sassFile = path.join(__dirname, "test", "hsluv-tests.scss");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-var passes = 0;
-var failures = 0;
-var currentDescribe = "";
-var currentIt = "";
+const sassFile = path.join(__dirname, "test", "hsluv-tests.scss");
 
-var result = sass.compile(sassFile, {
+let passes = 0;
+let failures = 0;
+let currentDescribe = "";
+let currentIt = "";
+
+const result = sass.compile(sassFile, {
   loadPaths: [path.join(__dirname, "test")],
   functions: {
     "_test_start_group($name)": function (args) {
@@ -22,7 +26,7 @@ var result = sass.compile(sassFile, {
       return sass.sassNull;
     },
     "_test_assert_result($assert, $expected, $passed)": function (args) {
-      var passed = args[2].assertBoolean().value;
+      const passed = args[2].assertBoolean().value;
       if (passed) {
         passes++;
         console.log("  \u2713 " + currentIt);

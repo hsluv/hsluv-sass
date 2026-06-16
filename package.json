@@ -1,6 +1,7 @@
 {
   "name": "hsluv-sass",
   "version": "3.0.0-beta.1",
+  "type": "module",
   "description": "HSLuv Sass - Human friendly HSL",
   "main": "src/_hsluv.scss",
   "sass": "src/_hsluv.scss",
@@ -8,7 +9,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "node test.js",
+    "test": "node test.mjs",
     "lint": "prettier --check '**/*.scss'",
     "fix": "prettier --write '**/*.scss'"
   },
