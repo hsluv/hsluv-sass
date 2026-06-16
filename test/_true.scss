@@ -1,0 +1,23 @@
+@use "sass:meta";
+
+@mixin describe($name) {
+  @if not _test_start_group($name) {
+  }
+  @content;
+}
+
+@mixin it($name) {
+  @if not _test_start_test($name) {
+  }
+  @content;
+}
+
+@mixin assert-equal($assert, $expected, $inspect: false) {
+  @if $inspect {
+    $assert: meta.inspect($assert);
+    $expected: meta.inspect($expected);
+  }
+
+  @if not _test_assert_result($assert, $expected, $assert == $expected) {
+  }
+}

@@ -1,6 +1,6 @@
 @use "sass:map";
 
-@use "sass-true" as *;
+@use "./true" as *;
 @use "../src/conversions" as conv;
 
 @use "../src/conversions/lch" as lch;
