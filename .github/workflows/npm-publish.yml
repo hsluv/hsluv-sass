@@ -32,10 +32,15 @@ jobs:
       - name: Publish to npm
         run: |
           package_version="$(node -p "require('./package.json').version")"
-          # Skip if this version is already published
           if npm view "hsluv-sass@${package_version}" version 2>/dev/null; then
             echo "hsluv-sass@${package_version} is already published, skipping"
             exit 0
           fi
-          echo "Publishing hsluv-sass@${package_version}"
-          npm publish --provenance --access public
+          if [[ "$package_version" =~ -([a-zA-Z]+) ]]; then
+            tag="${BASH_REMATCH[1]}"
+            echo "Publishing prerelease with dist-tag: $tag"
+            npm publish --provenance --access public --tag "$tag"
+          else
+            echo "Publishing stable release"
+            npm publish --provenance --access public
+          fi
