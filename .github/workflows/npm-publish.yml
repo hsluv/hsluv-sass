@@ -23,7 +23,7 @@ jobs:
       - name: Check release tag matches package version
         if: github.event_name == 'release'
         run: |
-          package_version="$(node -e "import pkg from './package.json' with {type:'json'};console.log(pkg.default.version)")"
+          package_version="$(node -e "import pkg from './package.json' with {type:'json'};console.log(pkg.version)")"
           release_version="${GITHUB_REF_NAME#v}"
           if [ "$package_version" != "$release_version" ]; then
             echo "Release tag ${GITHUB_REF_NAME} does not match package.json version ${package_version}"
@@ -31,7 +31,7 @@ jobs:
           fi
       - name: Publish to npm
         run: |
-          package_version="$(node -e "import pkg from './package.json' with {type:'json'};console.log(pkg.default.version)")"
+          package_version="$(node -e "import pkg from './package.json' with {type:'json'};console.log(pkg.version)")"
           if npm view "hsluv-sass@${package_version}" version 2>/dev/null; then
             echo "hsluv-sass@${package_version} is already published, skipping"
             exit 0
