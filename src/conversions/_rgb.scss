@@ -7,14 +7,14 @@
 @function from-xyz($xyz) {
   $tuple: (map.get($xyz, "x"), map.get($xyz, "y"), map.get($xyz, "z"));
 
-  $r: dot-product(map.get(const.$m, "r"), $tuple);
-  $g: dot-product(map.get(const.$m, "g"), $tuple);
-  $b: dot-product(map.get(const.$m, "b"), $tuple);
+  $r: _dot-product(map.get(const.$m, "r"), $tuple);
+  $g: _dot-product(map.get(const.$m, "g"), $tuple);
+  $b: _dot-product(map.get(const.$m, "b"), $tuple);
 
   @return (
-    "r": math.round(from-linear($r) * 255),
-    "g": math.round(from-linear($g) * 255),
-    "b": math.round(from-linear($b) * 255)
+    "r": math.round(_from-linear($r) * 255),
+    "g": math.round(_from-linear($g) * 255),
+    "b": math.round(_from-linear($b) * 255)
   );
 }
 
@@ -23,20 +23,18 @@
   $g: math.div(map.get($rgb, "g"), 255);
   $b: math.div(map.get($rgb, "b"), 255);
 
-  $tuple: (to-linear($r), to-linear($g), to-linear($b));
+  $tuple: (_to-linear($r), _to-linear($g), _to-linear($b));
 
-  $x: dot-product(map.get(const.$m_inv, "x"), $tuple);
-  $y: dot-product(map.get(const.$m_inv, "y"), $tuple);
-  $z: dot-product(map.get(const.$m_inv, "z"), $tuple);
+  $x: _dot-product(map.get(const.$m_inv, "x"), $tuple);
+  $y: _dot-product(map.get(const.$m_inv, "y"), $tuple);
+  $z: _dot-product(map.get(const.$m_inv, "z"), $tuple);
 
   @return ("x": $x, "y": $y, "z": $z);
 }
 
-// @private
-
 // @param {number} $c
 // @return {number}
-@function from-linear($c) {
+@function _from-linear($c) {
   @if $c <= 0.0031308 {
     @return 12.92 * $c;
   }
@@ -45,7 +43,7 @@
 
 // @param {number} $c
 // @return {number}
-@function to-linear($c) {
+@function _to-linear($c) {
   $a: 0.055;
   @if $c > 0.04045 {
     @return math.pow(math.div($c + $a, 1 + $a), 2.4);
@@ -57,7 +55,7 @@
 // @param {number[]} $a
 // @param {number[]} $b
 // @return {number}
-@function dot-product($a, $b) {
+@function _dot-product($a, $b) {
   $ret: list.nth($a, 1) * list.nth($b, 1);
   $ret: $ret + list.nth($a, 2) * list.nth($b, 2);
   $ret: $ret + list.nth($a, 3) * list.nth($b, 3);

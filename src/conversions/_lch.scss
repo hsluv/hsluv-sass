@@ -12,7 +12,7 @@
   $c: 0;
   // white and black: disambiguate chroma
   @if not($l > 99.9999999 or $l < 0.00000001) {
-    $max: max-chroma-for-l-h($l, $h);
+    $max: _max-chroma-for-l-h($l, $h);
     $c: math.div($max, 100) * $s;
   }
 
@@ -27,7 +27,7 @@
   $c: 0;
   // white and black: disambiguate chroma
   @if not($l > 99.9999999 or $l < 0.00000001) {
-    $max: max-safe-chroma-for-l($l);
+    $max: _max-safe-chroma-for-l($l);
     $c: math.div($max, 100) * $s;
   }
   @return ("l": $l, "c": $c, "h": $h);
@@ -41,7 +41,7 @@
   $s: 0;
   // white and black: disambiguate saturation
   @if not($l > 99.9999999 or $l < 0.00000001) {
-    $max: max-chroma-for-l-h($l, $h);
+    $max: _max-chroma-for-l-h($l, $h);
     $s: math.div($c, $max) * 100;
   }
   @return ("h": $h, "s": $s, "l": $l);
@@ -55,7 +55,7 @@
   $s: 0;
   // white and black: disambiguate saturation
   @if not($l > 99.9999999 or $l < 0.00000001) {
-    $max: max-safe-chroma-for-l($l);
+    $max: _max-safe-chroma-for-l($l);
     $s: math.div($c, $max) * 100;
   }
   @return ("h": $h, "s": $s, "l": $l);
@@ -63,16 +63,16 @@
 
 // For a given lightness and hue, return the maximum chroma that fits in
 // the RGB gamut.
-// @param {number[][2]} $l
+// @param {number} $l
 // @param {number} $h
 // @return {number}
-@function max-chroma-for-l-h($l, $h) {
+@function _max-chroma-for-l-h($l, $h) {
   $lengths: ();
 
-  @each $line in get-bounds($l) {
-    $l: length-of-ray-until-intersect($h, $line);
-    @if $l != null {
-      $lengths: list.append($lengths, $l);
+  @each $line in _get-bounds($l) {
+    $length: _length-of-ray-until-intersect($h, $line);
+    @if $length != null {
+      $lengths: list.append($lengths, $length);
     }
   }
 
@@ -82,17 +82,17 @@
 // For given lightness, returns the maximum chroma. Keeping the chroma value
 // below this number will ensure that for any hue, the color is within the RGB
 // gamut.
-// @param {number[][2]} $l
+// @param {number} $l
 // @return {number}
-@function max-safe-chroma-for-l($l) {
+@function _max-safe-chroma-for-l($l) {
   $lengths: ();
 
-  @each $point in get-bounds($l) {
+  @each $point in _get-bounds($l) {
     $m1: list.nth($point, 1);
     $b1: list.nth($point, 2);
-    // x where line intersects with perpendicular running though (0, 0)
-    $x: intersect-line-line(($m1, $b1), (math.div(-1, $m1), 0));
-    $lengths: list.append($lengths, distance-from-pole(($x, $b1 + $x * $m1)));
+    // x where line intersects with perpendicular running through (0, 0)
+    $x: _intersect-line-line(($m1, $b1), (math.div(-1, $m1), 0));
+    $lengths: list.append($lengths, _distance-from-pole(($x, $b1 + $x * $m1)));
   }
 
   @return math.min($lengths...);
@@ -103,18 +103,20 @@
 // push a value out of the RGB gamut
 // @param {number} $l
 // @return {number[][2]}
-@function get-bounds($l) {
+@function _get-bounds($l) {
   $sub1: math.div(math.pow($l + 16, 3), 1560896);
   $sub2: $sub1;
   @if $sub1 <= const.$epsilon {
     $sub2: math.div($l, const.$kappa);
   }
+
   $ret: ();
   @each $channel in (r, g, b) {
     $m_: map.get(const.$m, $channel);
     $m1: list.nth($m_, 1);
     $m2: list.nth($m_, 2);
     $m3: list.nth($m_, 3);
+
     @for $t from 0 through 1 {
       $top1: (284517 * $m1 - 94839 * $m3) * $sub2;
       $top2: (838422 * $m3 + 769860 * $m2 + 731718 * $m1) *
@@ -138,7 +140,7 @@
 // @param {number} $theta
 // @param {number[2]} $line
 // @return {number?}
-@function length-of-ray-until-intersect($theta, $line) {
+@function _length-of-ray-until-intersect($theta, $line) {
   // theta  -- angle of ray starting at (0, 0)
   // m, b   -- slope and intercept of line
   // x1, y1 -- coordinates of intersection
@@ -148,7 +150,6 @@
   // len              >= 0
   // len * cos(theta)  = x1
   // len * sin(theta)  = y1
-  //
   //
   // b + m * (len * cos(theta)) = len * sin(theta)
   // b = len * sin(hrad) - m * len * cos(theta)
@@ -167,7 +168,7 @@
 
 // @param {number[2]} $point
 // @return {number}
-@function distance-from-pole($point) {
+@function _distance-from-pole($point) {
   @return math.sqrt(
     math.pow(list.nth($point, 1), 2) + math.pow(list.nth($point, 2), 2)
   );
@@ -176,7 +177,7 @@
 // @param {number[2]} $line1
 // @param {number[2]} $line2
 // @return {number}
-@function intersect-line-line($line1, $line2) {
+@function _intersect-line-line($line1, $line2) {
   @return math.div(
     list.nth($line1, 2) - list.nth($line2, 2),
     list.nth($line2, 1) - list.nth($line1, 1)

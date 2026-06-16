@@ -41,6 +41,24 @@ Emitted css:
 }
 ```
 
+When compiling with the Sass CLI, make sure `node_modules` is in the load path:
+
+```sh
+sass --load-path=node_modules styles.scss styles.css
+```
+
+Or use the Node package importer with a `pkg:` URL:
+
+```scss
+@use "pkg:hsluv-sass" as hsluv;
+```
+
+```sh
+sass --pkg-importer=node styles.scss styles.css
+```
+
+Most build tools add `node_modules` to the Sass load path automatically.
+
 ### API
 
 ```scss
