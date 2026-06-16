@@ -1,5 +1,5 @@
 # HSLuv Sass
-[![Build Status](https://github.com/hsluv/hsluv-sass/actions/workflows/ci.yml/badge.svg)](https://github.com/hsluv/hsluv-sass/actions/workflows/ci.yml?query=branch%3Amaster)
+[![Build Status](https://github.com/hsluv/hsluv-sass/actions/workflows/ci.yml/badge.svg)](https://github.com/hsluv/hsluv-sass/actions/workflows/ci.yml?query=branch%3Amain)
 [![Package Version](https://img.shields.io/npm/v/hsluv-sass.svg)](https://www.npmjs.com/package/hsluv-sass)
 
 Pure Sass [HSLuv](http://www.hsluv.org) implementation.
