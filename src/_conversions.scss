@@ -1,22 +1,23 @@
-@use 'sass:math';
-@use 'sass:map';
+@use "sass:map";
+@use "sass:math";
+@use "sass:meta";
 
-@use './conversions/lch' as lch;
-@use './conversions/luv' as luv;
-@use './conversions/xyz' as xyz;
-@use './conversions/rgb' as rgb;
+@use "./conversions/lch" as lch;
+@use "./conversions/luv" as luv;
+@use "./conversions/xyz" as xyz;
+@use "./conversions/rgb" as rgb;
 
 @function args-hsl($hue, $saturation, $lightness) {
   $hsl: $hue;
 
   @if ($saturation and $lightness) {
-    @if unitless($hue) {
+    @if math.is-unitless($hue) {
       $hue: $hue * 1deg;
     }
-    @if unit($saturation) == "%" {
+    @if math.unit($saturation) == "%" {
       $saturation: math.div($saturation, 1%);
     }
-    @if unit($lightness) == "%" {
+    @if math.unit($lightness) == "%" {
       $lightness: math.div($lightness, 1%);
     }
 
@@ -25,7 +26,7 @@
       s: $saturation,
       l: $lightness,
     );
-  } @else if (type-of($value: $hsl) != map) {
+  } @else if (meta.type-of($value: $hsl) != map) {
     @error "hsluv function with a single parameter must be called with a map of the form (h: $hue, s: $saturation, l: $lightness)";
   } @else if not (map.get($hsl, h) and map.get($hsl, s) and map.get($hsl, l)) {
     @error "hsluv function with a single parameter must be called with a map of the form (h: $hue, s: $saturation, l: $lightness)";

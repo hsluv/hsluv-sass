@@ -1,5 +1,5 @@
-@use 'sass:map';
-@use 'sass:math';
+@use "sass:map";
+@use "sass:math";
 
 @function from-lch($lch) {
   $l: map.get($lch, "l");

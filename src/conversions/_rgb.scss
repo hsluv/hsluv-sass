@@ -1,7 +1,8 @@
-@use 'sass:map';
-@use 'sass:math';
+@use "sass:list";
+@use "sass:map";
+@use "sass:math";
 
-@use '../constants' as const;
+@use "../constants" as const;
 
 @function from-xyz($xyz) {
   $tuple: (map.get($xyz, "x"), map.get($xyz, "y"), map.get($xyz, "z"));
@@ -36,11 +37,10 @@
 // @param {number} $c
 // @return {number}
 @function from-linear($c) {
-  @return if(
-    $c <= 0.0031308,
-    12.92 * $c,
-    1.055 * math.pow($c, math.div(1, 2.4)) - 0.055
-  );
+  @if $c <= 0.0031308 {
+    @return 12.92 * $c;
+  }
+  @return 1.055 * math.pow($c, math.div(1, 2.4)) - 0.055;
 }
 
 // @param {number} $c
@@ -58,9 +58,9 @@
 // @param {number[]} $b
 // @return {number}
 @function dot-product($a, $b) {
-  $ret: nth($a, 1) * nth($b, 1);
-  $ret: $ret + nth($a, 2) * nth($b, 2);
-  $ret: $ret + nth($a, 3) * nth($b, 3);
+  $ret: list.nth($a, 1) * list.nth($b, 1);
+  $ret: $ret + list.nth($a, 2) * list.nth($b, 2);
+  $ret: $ret + list.nth($a, 3) * list.nth($b, 3);
 
   @return $ret;
 }

@@ -1,18 +1,18 @@
-@use 'sass:map';
+@use "sass:map";
 
-@use '../node_modules/sass-true' as *;
-@use '../src/conversions' as conv;
+@use "sass-true" as *;
+@use "../src/conversions" as conv;
 
-@use '../src/conversions/lch' as lch;
-@use '../src/conversions/luv' as luv;
-@use '../src/conversions/xyz' as xyz;
-@use '../src/conversions/rgb' as rgb;
+@use "../src/conversions/lch" as lch;
+@use "../src/conversions/luv" as luv;
+@use "../src/conversions/xyz" as xyz;
+@use "../src/conversions/rgb" as rgb;
 
-@import "./data/snapshot";
+@use "./data/snapshot";
 
 @include describe("Snapshot testing") {
   @include it("should match latest snapshot") {
-    @each $color, $sample in $values {
+    @each $color, $sample in snapshot.$values {
       @include assert-equal(
         conv.hsluv-rgb(map.get($sample, "hsluv")),
         map.get($sample, "rgb"),
@@ -31,7 +31,7 @@
       );
       @include assert-equal(
         lch.from_hpluv(map.get($sample, "hpluv")),
-        map.get($sample, "lch"),
+        map.get($sample, "lch-from-hpluv"),
         $inspect: true
       );
       @include assert-equal(
@@ -52,38 +52,38 @@
 
       @include assert-equal(
         conv.rgb-hsluv(map.get($sample, "rgb")),
-        map.get($sample, "hsluv"),
+        map.get($sample, "hsluv-back"),
         $inspect: true
       );
       @include assert-equal(
         conv.rgb-hpluv(map.get($sample, "rgb")),
-        map.get($sample, "hpluv"),
+        map.get($sample, "hpluv-back"),
         $inspect: true
       );
 
       @include assert-equal(
         rgb.to-xyz(map.get($sample, "rgb")),
-        map.get($sample, "xyz"),
+        map.get($sample, "xyz-back"),
         $inspect: true
       );
       @include assert-equal(
-        xyz.to-luv(map.get($sample, "xyz")),
-        map.get($sample, "luv"),
+        xyz.to-luv(map.get($sample, "xyz-back")),
+        map.get($sample, "luv-back"),
         $inspect: true
       );
       @include assert-equal(
-        luv.to-lch(map.get($sample, "luv")),
-        map.get($sample, "lch"),
+        luv.to-lch(map.get($sample, "luv-back")),
+        map.get($sample, "lch-back"),
         $inspect: true
       );
       @include assert-equal(
-        lch.to-hsluv(map.get($sample, "lch")),
-        map.get($sample, "hsluv"),
+        lch.to-hsluv(map.get($sample, "lch-back")),
+        map.get($sample, "hsluv-back"),
         $inspect: true
       );
       @include assert-equal(
-        lch.to-hpluv(map.get($sample, "lch")),
-        map.get($sample, "hpluv"),
+        lch.to-hpluv(map.get($sample, "lch-back")),
+        map.get($sample, "hpluv-back"),
         $inspect: true
       );
     }
