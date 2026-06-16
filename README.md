@@ -11,6 +11,8 @@ include
 - RGB color components range from 0 to 255, not 0 to 1
 - Testing precision is lowered significantly
 
+Requires **Dart Sass >= 1.83.0** (not compatible with LibSass / Node Sass).
+
 ## Usage
 
 ### Installation
@@ -21,34 +23,13 @@ npm install hsluv-sass
 
 ### Example
 
-Create `demo.csss`:
-
-With [`@use`](https://sass-lang.com/documentation/at-rules/use):
-
 ```scss
-@use "./node_modules/hsluv-sass" as hsluv;
+@use "hsluv-sass" as hsluv;
 
 .example {
   color: hsluv.hsluv(23.2, 83.4%, 43.7%);
   background-color: hsluv.hpluv(250.4, 100%, 59.1%);
 }
-```
-
-With [`@import`](https://sass-lang.com/documentation/at-rules/import):
-
-```scss
-@import "./node_modules/hsluv-sass";
-
-.example {
-  color: hsluv(23.2, 83.4%, 43.7%);
-  background-color: hpluv(250.4, 100%, 59.1%);
-}
-```
-
-Compile:
-
-```bash
-$ npx sass demo.scss 
 ```
 
 Emitted css:
@@ -63,25 +44,25 @@ Emitted css:
 ### API
 
 ```scss
-hsluv($hue, $saturation, $lightness) //=> color
+hsluv.hsluv($hue, $saturation, $lightness) //=> color
 ```
 
 Creates a sass color object in HSLuv color space. 
 
 ```scss
-hpluv($hue, $saturation, $lightness) //=> color
+hsluv.hpluv($hue, $saturation, $lightness) //=> color
 ```
 
 Creates a sass color object in HPLuv color space. 
 
 ```scss
-hsluva($hue, $saturation, $lightness, $alpha: 1) //=> color
+hsluv.hsluva($hue, $saturation, $lightness, $alpha: 1) //=> color
 ```
 
 Creates a sass color object in HSLuv color space with transparency.
 
 ```scss
-hpluva($hue, $saturation, $lightness, $alpha: 1) //=> color
+hsluv.hpluva($hue, $saturation, $lightness, $alpha: 1) //=> color
 ```
 
 Creates a sass color object in HPLuv color space with transparency. 
@@ -93,19 +74,33 @@ Creates a sass color object in HPLuv color space with transparency.
 - `$lightness` — The lightness of the color. Must be a number between 0% and 100%, inclusive.
 - `$alpha` - The opacity of the color. Must be a number between 0 and 1, inclusive.
 
-All function support passing an HSL map directly and omitting the `$saturation` and `$lightness` parameters. If unitless, the `h` value must be in radians.
+All functions support passing an HSL map directly and omitting the `$saturation` and `$lightness` parameters. If unitless, the `h` value must be in radians.
 
 ```scss
 .example {
-  color: hsluv((h: 0.4049164, s: 83.4, l: 43.7));
-  background-color: hpluv((h: 4.3703044, s: 100, l: 59.1));
+  color: hsluv.hsluv((h: 0.4049164, s: 83.4, l: 43.7));
+  background-color: hsluv.hpluv((h: 4.3703044, s: 100, l: 59.1));
 }
+```
+
+### Migrating from v2
+
+v3 drops `@import` support. Use `@use` with a namespace:
+
+```scss
+// v2
+@import "hsluv-sass";
+color: hsluv(23.2, 83.4%, 43.7%);
+
+// v3
+@use "hsluv-sass" as hsluv;
+color: hsluv.hsluv(23.2, 83.4%, 43.7%);
 ```
 
 ## Testing
 
 Tested with [True](https://www.oddbird.net/true/docs/).
-Continuous integration tests againsts the last several version of node on multiple platforms.
+Continuous integration tests against current Node.js LTS versions on multiple platforms.
 
 You can locally test after installing npm dependencies. Just run
 `npm test`.

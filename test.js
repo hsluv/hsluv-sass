@@ -3,7 +3,6 @@ var sassTrue = require("sass-true");
 
 var sassFile = path.join(__dirname, "test", "hsluv-tests.scss");
 sassTrue.runSass(
-  { file: sassFile },
   {
     describe(label, block) {
       console.group(label);
@@ -15,5 +14,7 @@ sassTrue.runSass(
       block();
       console.groupEnd();
     },
-  }
+  },
+  sassFile,
+  { loadPaths: ["node_modules"] }
 );

@@ -1,7 +1,7 @@
-@use 'sass:map';
-@use 'sass:math';
+@use "sass:map";
+@use "sass:math";
 
-@use '../constants' as const;
+@use "../constants" as const;
 
 @function from-luv($luv) {
   $l: map.get($luv, "l");
