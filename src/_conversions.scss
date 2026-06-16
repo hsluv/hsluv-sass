@@ -8,65 +8,71 @@
 @use "./conversions/rgb" as rgb;
 
 @function args-hsl($hue, $saturation, $lightness) {
-  $hsl: $hue;
-
-  @if ($saturation and $lightness) {
-    @if math.is-unitless($hue) {
-      $hue: $hue * 1deg;
-    }
-    @if math.unit($saturation) == "%" {
-      $saturation: math.div($saturation, 1%);
-    }
-    @if math.unit($lightness) == "%" {
-      $lightness: math.div($lightness, 1%);
-    }
-
-    $hsl: (
-      h: $hue,
-      s: $saturation,
-      l: $lightness,
+  @if $saturation and $lightness {
+    @return (
+      "h": _normalize-hue($hue),
+      "s": _normalize-percent($saturation),
+      "l": _normalize-percent($lightness)
     );
-  } @else if (meta.type-of($value: $hsl) != map) {
-    @error "hsluv function with a single parameter must be called with a map of the form (h: $hue, s: $saturation, l: $lightness)";
-  } @else if not (map.get($hsl, h) and map.get($hsl, s) and map.get($hsl, l)) {
+  }
+
+  @if meta.type-of($hue) != map {
     @error "hsluv function with a single parameter must be called with a map of the form (h: $hue, s: $saturation, l: $lightness)";
   }
 
-  @return $hsl;
+  @if not
+    map.has-key($hue, "h") or not
+    map.has-key($hue, "s") or not
+    map.has-key($hue, "l")
+  {
+    @error "hsluv function with a single parameter must be called with a map of the form (h: $hue, s: $saturation, l: $lightness)";
+  }
+
+  @return $hue;
+}
+
+@function _normalize-hue($hue) {
+  @if math.is-unitless($hue) {
+    @return $hue * 1deg;
+  }
+  @return $hue;
+}
+
+@function _normalize-percent($value) {
+  @if math.unit($value) == "%" {
+    @return math.div($value, 1%);
+  }
+  @return $value;
 }
 
 @function hsluv-rgb($hsluv) {
   $lch: lch.from-hsluv($hsluv);
   $luv: luv.from-lch($lch);
   $xyz: xyz.from-luv($luv);
-  $rgb: rgb.from-xyz($xyz);
 
-  @return $rgb;
+  @return rgb.from-xyz($xyz);
 }
 
 @function hpluv-rgb($hpluv) {
   $lch: lch.from-hpluv($hpluv);
   $luv: luv.from-lch($lch);
   $xyz: xyz.from-luv($luv);
-  $rgb: rgb.from-xyz($xyz);
 
-  @return $rgb;
+  @return rgb.from-xyz($xyz);
 }
 
 @function rgb-hsluv($rgb) {
   $xyz: rgb.to-xyz($rgb);
   $luv: xyz.to-luv($xyz);
   $lch: luv.to-lch($luv);
-  $hsluv: lch.to-hsluv($lch);
 
-  @return $hsluv;
+  @return lch.to-hsluv($lch);
 }
 
 @function rgb-hpluv($rgb) {
   $xyz: rgb.to-xyz($rgb);
   $luv: xyz.to-luv($xyz);
   $lch: luv.to-lch($luv);
-  $hpluv: lch.to-hpluv($lch);
 
-  @return $hpluv;
+  @return lch.to-hpluv($lch);
 }

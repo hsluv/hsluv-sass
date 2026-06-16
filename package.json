@@ -3,8 +3,14 @@
   "version": "3.0.0-beta.1",
   "type": "module",
   "description": "HSLuv Sass - Human friendly HSL",
-  "main": "src/_hsluv.scss",
-  "sass": "src/_hsluv.scss",
+  "main": "index.scss",
+  "sass": "index.scss",
+  "exports": {
+    ".": {
+      "sass": "./index.scss",
+      "default": "./src/_hsluv.scss"
+    }
+  },
   "directories": {
     "test": "test"
   },

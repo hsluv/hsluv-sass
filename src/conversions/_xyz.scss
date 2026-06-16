@@ -16,7 +16,7 @@
   $var-u: math.div($u, 13 * $l) + const.$ref-u;
   $var-v: math.div($v, 13 * $l) + const.$ref-v;
 
-  $y: l-to-y($l);
+  $y: _l-to-y($l);
   $x: 0 - math.div(9 * $y * $var-u, ($var-u - 4) * $var-v - $var-u * $var-v);
   $z: math.div(9 * $y - (15 * $var-v * $y) - ($var-v * $x), 3 * $var-v);
 
@@ -33,7 +33,7 @@
     @return ("l": 0, "u": 0, "v": 0);
   }
 
-  $l: y-to-l($y);
+  $l: _y-to-l($y);
 
   $var-u: math.div(4 * $x, $x + (15 * $y) + (3 * $z));
   $var-v: math.div(9 * $y, $x + (15 * $y) + (3 * $z));
@@ -50,7 +50,7 @@
 // simplified accordingly.
 // @param {number} $y
 // @return {number}
-@function y-to-l($y) {
+@function _y-to-l($y) {
   @if $y <= const.$epsilon {
     @return $y * const.$kappa;
   } @else {
@@ -60,7 +60,7 @@
 
 // @param {number} $l
 // @return {number}
-@function l-to-y($l) {
+@function _l-to-y($l) {
   @if $l <= 8 {
     @return math.div($l, const.$kappa);
   } @else {
