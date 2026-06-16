@@ -9,6 +9,7 @@
     "test": "test"
   },
   "scripts": {
+    "pretest": "node snapshot.mjs",
     "test": "node test.mjs",
     "lint": "prettier --check '**/*.scss'",
     "fix": "prettier --write '**/*.scss'"
