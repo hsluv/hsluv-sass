@@ -12,12 +12,26 @@
   @content;
 }
 
-@mixin assert-equal($assert, $expected, $inspect: false) {
-  @if $inspect {
-    $assert: meta.inspect($assert);
-    $expected: meta.inspect($expected);
+@mixin assert-equal($assert, $expected, $inspect: false, $approx: false) {
+  $assert-output: $assert;
+  $expected-output: $expected;
+  $passed: false;
+
+  @if $approx {
+    $passed: _test_assert_approx($assert, $expected);
+    $assert-output: meta.inspect($assert);
+    $expected-output: meta.inspect($expected);
+  } @else {
+    @if $inspect {
+      $assert: meta.inspect($assert);
+      $expected: meta.inspect($expected);
+    }
+
+    $assert-output: $assert;
+    $expected-output: $expected;
+    $passed: $assert == $expected;
   }
 
-  @if not _test_assert_result($assert, $expected, $assert == $expected) {
+  @if not _test_assert_result($assert-output, $expected-output, $passed) {
   }
 }

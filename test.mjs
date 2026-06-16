@@ -13,6 +13,54 @@ let failures = 0;
 let currentDescribe = "";
 let currentIt = "";
 
+function approxEqual(a, b, tolerance = 1e-9) {
+  if (a instanceof sass.SassNumber) {
+    return b instanceof sass.SassNumber && Math.abs(a.value - b.value) <= tolerance;
+  }
+
+  if (a instanceof sass.SassMap) {
+    if (!(b instanceof sass.SassMap) || a.contents.size !== b.contents.size) {
+      return false;
+    }
+    const mapA = mapToObject(a);
+    const mapB = mapToObject(b);
+    for (const key of Object.keys(mapA)) {
+      if (!Object.prototype.hasOwnProperty.call(mapB, key)) {
+        return false;
+      }
+      if (!approxEqual(mapA[key], mapB[key], tolerance)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  if (a instanceof sass.SassColor) {
+    return (
+      b instanceof sass.SassColor &&
+      a.red === b.red &&
+      a.green === b.green &&
+      a.blue === b.blue &&
+      a.alpha === b.alpha
+    );
+  }
+
+  if (a instanceof sass.SassString) {
+    return b instanceof sass.SassString && a.text === b.text;
+  }
+
+  return String(a) === String(b);
+}
+
+function mapToObject(map) {
+  const obj = {};
+  map.contents.forEach((value, key) => {
+    const keyStr = key instanceof sass.SassString ? key.text : key.toString();
+    obj[keyStr] = value;
+  });
+  return obj;
+}
+
 const result = sass.compile(sassFile, {
   loadPaths: [path.join(__dirname, "test")],
   functions: {
@@ -24,6 +72,9 @@ const result = sass.compile(sassFile, {
     "_test_start_test($name)": function (args) {
       currentIt = args[0].assertString().text;
       return sass.sassNull;
+    },
+    "_test_assert_approx($a, $b)": function (args) {
+      return approxEqual(args[0], args[1]) ? sass.sassTrue : sass.sassFalse;
     },
     "_test_assert_result($assert, $expected, $passed)": function (args) {
       const passed = args[2].assertBoolean().value;
