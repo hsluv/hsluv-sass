@@ -131,4 +131,4 @@ Have a question or need help? [Open an issue](https://github.com/hsluv/hsluv-sas
 
 This project is provided under the terms of the [MIT License](LICENSE).
 
-Original version by **Cameron Little** · [Github](https://github.com/apexskier) · [Twitter](https://twitter.com/apexskier) · [CodePen](https://codepen.com/apexskier)
+Original version by **Cameron Little** · [Github](https://github.com/apexskier) · [CodePen](https://codepen.com/apexskier)
